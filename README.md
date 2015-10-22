@@ -8,7 +8,7 @@ When developing our app QuizUp we really quickly realized that most iOS apps are
 The problem with that class is that it is no fun to use, a verbose delegate based API that seemed to us to be way to complex. Being big fans of 
 the React paradigm we wanted something similar for UITableView and PVGTableViewProxy was born. A way to set up table view where you only need to
 worry about an array of model objects that are rendered in the tableview, PVGTableViewProxy does the rest. PVGTableViewProxy depends heavily on
-Reactive [Reactive Cocoa](https://github.com/ReactiveCocoa/ReactiveCocoa).
+[Reactive Cocoa](https://github.com/ReactiveCocoa/ReactiveCocoa).
 
 ## Usage
 
