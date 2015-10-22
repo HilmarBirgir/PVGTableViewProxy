@@ -86,4 +86,4 @@ PVGTableViewProxy is available under the MIT license. See the LICENSE file for m
 
 ## More Info
 
-Feel free to open an issue if you find a bug and if you want to contribute please sumbit a pull request!
+Feel free to open an issue if you find a bug and if you want to contribute please submit a pull request!
