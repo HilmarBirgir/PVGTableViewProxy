@@ -1,0 +1,23 @@
+PODS:
+  - PVGTableViewProxy (0.1.0):
+    - ReactiveCocoa (= 2.4.2)
+  - ReactiveCocoa (2.4.2):
+    - ReactiveCocoa/UI (= 2.4.2)
+  - ReactiveCocoa/Core (2.4.2):
+    - ReactiveCocoa/no-arc
+  - ReactiveCocoa/no-arc (2.4.2)
+  - ReactiveCocoa/UI (2.4.2):
+    - ReactiveCocoa/Core
+
+DEPENDENCIES:
+  - PVGTableViewProxy (from `../`)
+
+EXTERNAL SOURCES:
+  PVGTableViewProxy:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  PVGTableViewProxy: 8e743dcc469ec2bc9e9b2b5375c0371bfa03877c
+  ReactiveCocoa: fdf629a7321cc7504936fa86243d8c616faad302
+
+COCOAPODS: 0.38.2

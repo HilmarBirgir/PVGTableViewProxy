@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <Group
+      location = "container:"
+      name = "PVGTableViewProxy">
+      <FileRef
+         location = "group:PVGTableViewProxy/PVGGenericTableViewProxyAnimator.h">
+      </FileRef>
+      <FileRef
+         location = "group:PVGTableViewProxy/PVGGenericTableViewProxyAnimator.m">
+      </FileRef>
+      <FileRef
+         location = "group:PVGTableViewProxy/PVGNoAnimationTableViewProxyAnimator.h">
+      </FileRef>
+      <FileRef
+         location = "group:PVGTableViewProxy/PVGNoAnimationTableViewProxyAnimator.m">
+      </FileRef>
+      <FileRef
+         location = "group:PVGTableViewProxy/PVGTableViewCell.h">
+      </FileRef>
+      <FileRef
+         location = "group:PVGTableViewProxy/PVGTableViewCellViewModel.h">
+      </FileRef>
+      <FileRef
+         location = "group:PVGTableViewProxy/PVGTableViewDataSource.h">
+      </FileRef>
+      <FileRef
+         location = "group:PVGTableViewProxy/PVGTableViewProxy.h">
+      </FileRef>
+      <FileRef
+         location = "group:PVGTableViewProxy/PVGTableViewProxy.m">
+      </FileRef>
+      <FileRef
+         location = "group:PVGTableViewProxy/PVGTableViewProxyAnimator.h">
+      </FileRef>
+      <FileRef
+         location = "group:PVGTableViewProxy/PVGTableViewScrollCommand.h">
+      </FileRef>
+      <FileRef
+         location = "group:PVGTableViewProxy/PVGTableViewScrollCommand.m">
+      </FileRef>
+      <FileRef
+         location = "group:PVGTableViewProxy/PVGTableViewSection.h">
+      </FileRef>
+      <FileRef
+         location = "group:PVGTableViewProxy/PVGTableViewSection.m">
+      </FileRef>
+      <FileRef
+         location = "group:PVGTableViewProxy/PVGTableViewSectionHeader.h">
+      </FileRef>
+      <FileRef
+         location = "group:PVGTableViewProxy/PVGTableViewSectionHeaderViewModel.h">
+      </FileRef>
+      <FileRef
+         location = "group:PVGTableViewProxy/PVGTableViewSectionHeaderViewModel.m">
+      </FileRef>
+      <FileRef
+         location = "group:PVGTableViewProxy/PVGTableViewSimpleDataSource.h">
+      </FileRef>
+      <FileRef
+         location = "group:PVGTableViewProxy/PVGTableViewSimpleDataSource.m">
+      </FileRef>
+   </Group>
+   <FileRef
+      location = "group:Tests/PVGTableViewProxyTests.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Example/PVGTableViewProxyExample.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Tests/Pods/Pods.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Example/Pods/Pods.xcodeproj">
+   </FileRef>
+</Workspace>
