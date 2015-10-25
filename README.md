@@ -4,60 +4,57 @@
 
 ## Overview
 
-When developing our app QuizUp we really quickly realized that most iOS apps are just a collection of lists, which made us reach for UITableView.
-The problem with that class is that it is no fun to use, a verbose delegate based API that seemed to us to be way to complex. Being big fans of 
-the reactive paradigm we wanted something similar for UITableView and PVGTableViewProxy was born. A way to set up table view where you only need to
-worry about an array of model objects that are rendered in the tableview, PVGTableViewProxy does the rest. PVGTableViewProxy depends heavily on
-[Reactive Cocoa](https://github.com/ReactiveCocoa/ReactiveCocoa).
+`PVGTableViewProxy` is a helper class to set up an `UITableView` where you can declare your data as a simple array of view-model objects and `PVGTableViewProxy` makes sure it gets rendered.
 
-## Usage
+When developing [QuizUp](https://www.quizup.com) we quickly realized that most of the app (and most of all iOS apps) was just a collection of lists. This made us reach for `UITableView` but we immediately felt that it was no fun to use. Its verbose, delegate based API forced a lot of boiler-plate on us every time we needed to use it and being huge fans of [React](https://facebook.github.io/react/) and its declarative, state-less approach to UI we wanted something similar for `UITableView`. Thus `PVGTableViewProxy` was born!
 
-To run the example project, clone the repo and open PVGTableViewProxy.xcworkspace and then run the PVGTableViewProxyExample target.
+At the moment `PVGTableViewProxy` depends heavily on [Reactive Cocoa](https://github.com/ReactiveCocoa/ReactiveCocoa).
 
 ## Installation
 
-PVGTableViewProxy is available through [CocoaPods](http://cocoapods.org). To install it, simply add the following line to your Podfile:
+`PVGTableViewProxy` is available through [CocoaPods](http://cocoapods.org). To install it, simply add the following line to your Podfile:
 
 ```ruby
 pod "PVGTableViewProxy"
 ```
 
+## Usage
+
+To run the example project, clone the repo and open `PVGTableViewProxy.xcworkspace` and then run the `PVGTableViewProxyExample` target.
+
 ## Getting Started
 
-First thing you need to do is create a view controller that has a UITableView. Then you create a PVGTableViewProxy:
+First thing you need to do is create a view controller that has a `UITableView`. Then you create a `PVGTableViewProxy` and pass your table view and data to it:
 
 ```objective-c
 
 self.items = @[[DemoCellViewModel new],
-			   [DemoCellViewModel new]
-			   [DemoCellViewModel new]];
+               [DemoCellViewModel new]
+               [DemoCellViewModel new]];
 
 PVGTableViewProxy *dataSource = [PVGTableViewProxy proxyWithTableView:self.tableView
                                                            dataSource:RACObserve(self, items)
                                                               builder:^(id<PVGTableViewProxyConfig> builder) {
-												                UINib *nib = [UINib nibWithNibName:@"ExampleNib" bundle:nil];
-												                [builder registerNib:nib forCellReuseIdentifier:@"exampleNibReuseIdentifier"];
+                                                                UINib *nib = [UINib nibWithNibName:@"ExampleNib" bundle:nil];
+                                                                [builder registerNib:nib forCellReuseIdentifier:@"exampleNibReuseIdentifier"];
 }];
 ```
 
-In the builder block you register your cell reuse identifiers. DemoCell has to fulfill the PVGTableViewCell protocol and DemoCellViewModel has to fulfill the protocol PVGTableViewCellViewModel. Having set this up
-you can modify self.items and your table view will update. To get a better grasp of PVGTableViewProxy taking a look at the example project is a good idea.
-
+In the builder block you register your cell reuse identifiers. `DemoCell` has to fulfill the `PVGTableViewCell` protocol and `DemoCellViewModel` has to fulfill the protocol `PVGTableViewCellViewModel`. Having set this up you can modify `self.items`and your table view will update. To get a better grasp of `PVGTableViewProxy` taking a look at the example project is a good idea.
 
 ## Architecture
 
 ### PVGTableViewProxy
 
-The class that does the heavy lifting, gets passed in your table view and your data source as a RACSignal. PVGTableViewProxy is smart about when it needs to insert, delete and re-render cells.
+The class that does the heavy lifting, takes ownership of your table view and your data source as a `RACSignal`. `PVGTableViewProxy` is smart about when it needs to insert, delete and re-render cells.
 
 ### PVGTableViewCell
 
-The protocol your table view cells need to fulfill. The height function needs to return your cell height as a NSNumber and the setup function is called in cellForRowAtIndexPath.
+The protocol your table view cells need to fulfill. The `height` method needs to return your cell height as a `NSNumber` and the `setup` method is called in `cellForRowAtIndexPath`.
 
 ### PVGTableViewCellViewModel
 
-The protocol your table view cell view models need to fulfill. They have the reuseIdentifier of the cell, the uniqueID which is a unique ID for your model objects and cacheID which lets 
-PVGTableViewProxy know whether the corresponding cell needs to be re-rendered or not.
+The protocol your table view cell view models need to fulfill. They have the reuseIdentifier of the cell, the uniqueID which is a unique ID for your model objects (i.e. the data the cell represents) and cacheID which lets `PVGTableViewProxy` know whether the corresponding cell needs to be re-rendered or not.
 
 ### PVGTableViewSimpleDataSource
 
@@ -65,7 +62,7 @@ The wrapper around your signal of data.
 
 ## Unit Tests
 
-PVGTableViewProxy includes a suite of unit tests within the Tests subdirectory. In order to run the unit tests, you must install the testing dependencies via [CocoaPods](http://cocoapods.org/):
+`PVGTableViewProxy` includes a suite of unit tests within the Tests subdirectory. In order to run the unit tests, you must install the testing dependencies via [CocoaPods](http://cocoapods.org/):
 
     $ cd Tests
     $ pod install
@@ -82,7 +79,7 @@ Alexander Annas Helgason, alliannas@plainvanillagames.com
 
 ## License
 
-PVGTableViewProxy is available under the MIT license. See the LICENSE file for more info.
+`PVGTableViewProxy` is available under the MIT license. See the LICENSE file for more info.
 
 ## More Info
 
