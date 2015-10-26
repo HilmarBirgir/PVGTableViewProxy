@@ -42,10 +42,6 @@ NSInteger const LOAD_MORE_THRESHOLD = 15;
 
 @property (readwrite, atomic, weak) id<UITableViewDelegate> existingDelegate;
 
-@property (readwrite, atomic) PVGTableViewRenderCommand *pendingRenderCommand;
-
-@property (readwrite, atomic) NSTimer *timer;
-
 @end
 
 @implementation PVGTableViewProxy
@@ -91,28 +87,25 @@ NSInteger const LOAD_MORE_THRESHOLD = 15;
         self.animator = [[PVGGenericTableViewProxyAnimator alloc] init];
         
         self.scrollCommandsQueue = [NSMutableArray array];
-        
-        self.timer = [self runLoopTimer];
     }
     
     return self;
 }
 
-- (NSTimer *)runLoopTimer
+- (void)scheduleRenderCommand:(PVGTableViewRenderCommand *)renderCommand
 {
-    NSRunLoop *mainLoop = [NSRunLoop mainRunLoop];
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(runLoop) userInfo:nil repeats:YES];
-    [mainLoop addTimer:timer forMode:NSRunLoopCommonModes];
-    
-    return [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(runLoop) userInfo:nil repeats:YES];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self executeRenderCommand:renderCommand];
+    });
 }
 
-- (void)runLoop
+- (void)executeRenderCommand:(PVGTableViewRenderCommand *)renderCommand
 {
-    if (self.pendingRenderCommand)
+    // We want to make sure that we always run render commands before scroll commands
+    if (renderCommand)
     {
-        [self updatedSectionAtIndex:self.pendingRenderCommand.sectionIndex
-                        withNewData:self.pendingRenderCommand.viewModels];
+        [self updatedSectionAtIndex:renderCommand.sectionIndex
+                        withNewData:renderCommand.viewModels];
     }
     
     if (self.pendingScrollCommand)
@@ -125,8 +118,6 @@ NSInteger const LOAD_MORE_THRESHOLD = 15;
             self.pendingScrollCommand = nil;
         }
     }
-    
-    self.pendingRenderCommand = nil;
 }
 
 - (void)setDataSource:(RACSignal *)dataSource
@@ -159,14 +150,15 @@ NSInteger const LOAD_MORE_THRESHOLD = 15;
     RACSignal *viewModelsSignal = [section.dataSource.viewModels ignore:nil];
     [[viewModelsSignal deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(NSArray *newViewModels) {
         @strongify(self);
-        self.pendingRenderCommand = [PVGTableViewRenderCommand renderCommandForSection:sectionIndex
-                                                                            viewModels:[newViewModels copy]];
+        [self scheduleRenderCommand:[PVGTableViewRenderCommand renderCommandForSection:sectionIndex
+                                                                            viewModels:[newViewModels copy]]];
     }];
     
     [[section.dataSource.scrollCommands ignore:nil] subscribeNext:^(PVGTableViewScrollCommand *command) {
         @strongify(self);
         BOOL success = [self scrollInSection:sectionIndex usingCommand:command];
         self.pendingScrollCommand = success ? nil : RACTuplePack(@(sectionIndex), command);
+        // FIXME: Do we need to schedule a render here?
     }];
 }
 
@@ -412,7 +404,7 @@ NSInteger const LOAD_MORE_THRESHOLD = 15;
 {
     if (command == nil)
     {
-        return NO;
+        return YES; // No scroll command means successful scroll :troll:
     }
     
     if (sectionIndex >= [self.sections count] || sectionIndex < 0)
