@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9841C20FB0BA378B4B45A6F3"
+               BlueprintIdentifier = "B1C12D61056C888CC9A35AF4"
                BuildableName = "libPVGTableViewProxy.a"
                BlueprintName = "PVGTableViewProxy"
                ReferencedContainer = "container:Pods.xcodeproj">

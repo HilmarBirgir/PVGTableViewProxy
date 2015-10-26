@@ -35,6 +35,12 @@
          location = "group:PVGTableViewProxy/PVGTableViewProxyAnimator.h">
       </FileRef>
       <FileRef
+         location = "group:PVGTableViewProxy/PVGTableViewRenderCommand.h">
+      </FileRef>
+      <FileRef
+         location = "group:PVGTableViewProxy/PVGTableViewRenderCommand.m">
+      </FileRef>
+      <FileRef
          location = "group:PVGTableViewProxy/PVGTableViewScrollCommand.h">
       </FileRef>
       <FileRef

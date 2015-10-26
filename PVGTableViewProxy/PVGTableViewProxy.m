@@ -14,9 +14,11 @@
 
 #import "PVGTableViewSimpleDataSource.h"
 #import "PVGTableViewScrollCommand.h"
+#import "PVGTableViewRenderCommand.h"
 
 #import "PVGGenericTableViewProxyAnimator.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
+
 
 #define DDLogInfo NSLog
 #define DDLogDebug NSLog
@@ -40,7 +42,7 @@ NSInteger const LOAD_MORE_THRESHOLD = 15;
 
 @property (readwrite, atomic, weak) id<UITableViewDelegate> existingDelegate;
 
-@property (readwrite, atomic) RACTuple *pendingRenderCommand;
+@property (readwrite, atomic) PVGTableViewRenderCommand *pendingRenderCommand;
 
 @property (readwrite, atomic) NSTimer *timer;
 
@@ -109,8 +111,8 @@ NSInteger const LOAD_MORE_THRESHOLD = 15;
 {
     if (self.pendingRenderCommand)
     {
-        RACTupleUnpack(NSNumber *sectionIndex, NSArray *newViewModels) = self.pendingRenderCommand;
-        [self updatedSectionAtIndex:[sectionIndex integerValue] withNewData:newViewModels];
+        [self updatedSectionAtIndex:self.pendingRenderCommand.sectionIndex
+                        withNewData:self.pendingRenderCommand.viewModels];
     }
     
     if (self.pendingScrollCommand)
@@ -157,7 +159,8 @@ NSInteger const LOAD_MORE_THRESHOLD = 15;
     RACSignal *viewModelsSignal = [section.dataSource.viewModels ignore:nil];
     [[viewModelsSignal deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(NSArray *newViewModels) {
         @strongify(self);
-        self.pendingRenderCommand = RACTuplePack(@(sectionIndex), [newViewModels copy]);
+        self.pendingRenderCommand = [PVGTableViewRenderCommand renderCommandForSection:sectionIndex
+                                                                            viewModels:[newViewModels copy]];
     }];
     
     [[section.dataSource.scrollCommands ignore:nil] subscribeNext:^(PVGTableViewScrollCommand *command) {
@@ -553,12 +556,6 @@ NSInteger const LOAD_MORE_THRESHOLD = 15;
             [self.scrollCommandsQueue removeObjectAtIndex:0];
             
             [self scrollInSection:[sectionIndex integerValue] usingCommand:command];
-        }
-        else if (self.pendingRenderCommand)
-        {
-            RACTupleUnpack(NSNumber *sectionIndex, NSArray *newViewModels) = self.pendingRenderCommand;
-            [self updatedSectionAtIndex:[sectionIndex integerValue] withNewData:newViewModels];
-            self.pendingRenderCommand = nil;
         }
     }
 }
