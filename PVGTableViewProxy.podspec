@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "PVGTableViewProxy"
-  s.version          = "0.1"
+  s.version          = "0.2.0"
   s.summary          = "A React inspired component to be able to declaratively use UITableView."
   s.homepage         = "https://github.com/plain-vanilla-games/PVGTableViewProxy"
   s.license          = 'MIT'
