@@ -25,6 +25,7 @@
 #define DDLogError NSLog
 
 NSInteger const LOAD_MORE_THRESHOLD = 15;
+static BOOL enableDebugAssertions = NO;
 
 @interface PVGTableViewProxy ()
 
@@ -45,6 +46,16 @@ NSInteger const LOAD_MORE_THRESHOLD = 15;
 @end
 
 @implementation PVGTableViewProxy
+
++ (void)turnDebugAssertionsOn
+{
+    enableDebugAssertions = YES;
+}
+
++ (void)turnDebugAssertionsOff
+{
+    enableDebugAssertions = NO;
+}
 
 + (instancetype)proxyWithTableView:(UITableView *)tableView
                         dataSource:(RACSignal *)dataSource
@@ -84,7 +95,9 @@ NSInteger const LOAD_MORE_THRESHOLD = 15;
         
         self.didReloadSubject = [RACSubject subject];
         
-        self.animator = [[PVGGenericTableViewProxyAnimator alloc] init];
+        PVGGenericTableViewProxyAnimator *animator = [[PVGGenericTableViewProxyAnimator alloc] init];
+        animator.enableDebugAssertions = enableDebugAssertions;
+        self.animator = animator;
         
         self.scrollCommandsQueue = [NSMutableArray array];
     }

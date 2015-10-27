@@ -11,4 +11,6 @@
 
 @interface PVGGenericTableViewProxyAnimator : NSObject<PVGTableViewProxyAnimator>
 
+@property (readwrite, nonatomic) BOOL enableDebugAssertions;
+
 @end

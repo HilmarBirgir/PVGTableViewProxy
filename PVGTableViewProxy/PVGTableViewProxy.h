@@ -34,6 +34,10 @@ typedef void (^TableViewProxyBuilderBlock)(id<PVGTableViewProxyConfig> builder);
 @property (readonly, atomic) RACSignal *didReload;
 @property (readwrite, atomic) id<PVGTableViewProxyAnimator> animator;
 
+// Enables stronger assertions to help debug rendering issues. Comes with a slight performance hit.
++ (void)turnDebugAssertionsOn;
++ (void)turnDebugAssertionsOff;
+
 /*
  Example usage:
  
