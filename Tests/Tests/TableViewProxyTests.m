@@ -390,7 +390,7 @@
     OCMVerifyAll(self.mockTableView);
 }
 
-- (void)test_scroll_in_section_handles_nil_command
+- (void)test_scroll_in_section_succeeds_if_passed_nil_command
 {
     PVGTableViewSection *section = [PVGTableViewSection sectionWithReuseIdentifier:@"1"
                                                                              title:@"HEADER"
