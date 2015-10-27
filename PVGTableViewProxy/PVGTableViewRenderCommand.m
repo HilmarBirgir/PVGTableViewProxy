@@ -20,7 +20,7 @@
 + (instancetype)renderCommandForSection:(NSInteger)sectionIndex
                              viewModels:(NSArray<NSObject <PVGTableViewCellViewModel> *> *)viewModels
 {
-    PVGTableViewRenderCommand *command = [PVGTableViewRenderCommand new];
+    PVGTableViewRenderCommand *command = [self new];
     command.sectionIndex = sectionIndex;
     command.viewModels = viewModels;
     return command;
