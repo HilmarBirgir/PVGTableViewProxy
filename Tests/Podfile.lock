@@ -1,6 +1,6 @@
 PODS:
   - OCMock (3.2)
-  - PVGTableViewProxy (0.1.0):
+  - PVGTableViewProxy (0.1):
     - ReactiveCocoa (= 2.4.2)
   - ReactiveCocoa (2.4.2):
     - ReactiveCocoa/UI (= 2.4.2)
@@ -21,7 +21,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   OCMock: 28def049ef47f996b515a8eeea958be7ccab2dbb
-  PVGTableViewProxy: 8e743dcc469ec2bc9e9b2b5375c0371bfa03877c
+  PVGTableViewProxy: 338a83dc91a77cee0f2bac96d084f755f66a7957
   ReactiveCocoa: fdf629a7321cc7504936fa86243d8c616faad302
 
 COCOAPODS: 0.38.2

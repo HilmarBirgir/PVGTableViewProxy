@@ -22,10 +22,6 @@
 @property (readwrite, atomic) id<UITableViewDelegate> existingDelegate;
 @property (readwrite, atomic) NSInteger ongoingScrollAnimations;
 
-- (NSTimer *)runLoopTimer;
-
-@property (readwrite, atomic) NSTimer *timer;
-
 - (void)cacheCellHeightsFromData:(NSArray *)data;
 
 - (BOOL)scrollInSection:(NSInteger)sectionIndex
@@ -54,12 +50,6 @@
     self.proxy = [[PVGTableViewProxy alloc] initWithTableView:self.mockTableView];
 }
 
-- (void)tearDown
-{
-    [self.proxy.timer invalidate];
-    self.proxy = nil;
-    self.mockTableView = nil;
-}
 
 #pragma mark - Builder
 
@@ -400,7 +390,7 @@
     OCMVerifyAll(self.mockTableView);
 }
 
-- (void)test_scroll_in_section_handles_nil_command
+- (void)test_scroll_in_section_succeeds_if_passed_nil_command
 {
     PVGTableViewSection *section = [PVGTableViewSection sectionWithReuseIdentifier:@"1"
                                                                              title:@"HEADER"
@@ -418,7 +408,7 @@
     
     [[[self.mockTableView reject] ignoringNonObjectArgs] scrollToRowAtIndexPath:OCMOCK_ANY atScrollPosition:0 animated:NO];
     
-    XCTAssertEqual([self.proxy scrollInSection:0 usingCommand:nil], NO);
+    XCTAssertEqual([self.proxy scrollInSection:0 usingCommand:nil], YES);
     
     OCMVerifyAll(self.mockTableView);
 }

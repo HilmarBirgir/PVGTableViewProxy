@@ -11,8 +11,6 @@
 #import "PVGTableViewCell.h"
 #import "PVGTableViewCellViewModel.h"
 
-#define DDLogDebug NSLog
-
 NSString *debugIDFromCellViewModel(id<PVGTableViewCellViewModel> viewModel)
 {
     return [NSString stringWithFormat:@"%@:%@", [viewModel uniqueID], [viewModel cacheID]];
@@ -37,14 +35,12 @@ NSString *debugIDFromCellViewModel(id<PVGTableViewCellViewModel> viewModel)
 {
     if ([lastData count] == 0)
     {
-        DDLogDebug(@"Reloading whole section because last data as empty");
         [tableView reloadSections:[NSIndexSet indexSetWithIndex:sectionIndex]
                  withRowAnimation:UITableViewRowAnimationNone];
         return @[];
     }
     else if ([newData count] == 0)
     {
-        DDLogDebug(@"Reloading whole section because new data is empty");
         [tableView reloadSections:[NSIndexSet indexSetWithIndex:sectionIndex]
                  withRowAnimation:UITableViewRowAnimationFade];
         return @[];
@@ -147,33 +143,10 @@ NSString *debugIDFromCellViewModel(id<PVGTableViewCellViewModel> viewModel)
             }
         }
         
-#if ENABLE_TABLE_VIEW_PROXY_DEBUG
-        NSMutableArray *newIds = [NSMutableArray array];
-        NSMutableSet *newIdsSet = [NSMutableSet set];
-        for (id<PVGTableViewCellViewModel> viewModel in newData)
+        if (self.enableDebugAssertions)
         {
-            NSString *debugID = debugIDFromCellViewModel(viewModel);
-            [newIds addObject:debugID];
-            [newIdsSet addObject:debugID];
+            [self assertOnDuplicateIdsInNewData:newData lastData:lastData];
         }
-        
-        
-        if ([newIdsSet count] != [newData count])
-        {
-            // There are fewer ids in the data set than there are objects -> we have duplicates!
-            NSMutableArray *lastIds = [NSMutableArray array];
-            for (id<PVGTableViewCellViewModel> viewModel in lastData)
-            {
-                [lastIds addObject:debugIDFromCellViewModel(viewModel)];
-            }
-            
-            DDLogDebug(@"Last data: %@", lastIds);
-            DDLogDebug(@"New data: %@", newIds);
-            
-            NSAssert(NO, @"Duplicate ids when updating table view proxy %@", newIds);
-        }
-#endif
-        
         
         BOOL hasRowsThatNeedAnimation = [indexPathsToDelete count] > 0 || [indexPathsToInsert count] > 0;
         if (hasRowsThatNeedAnimation || [indexPathsToReloadWithNoAnimation count] > 0)
@@ -182,14 +155,12 @@ NSString *debugIDFromCellViewModel(id<PVGTableViewCellViewModel> viewModel)
             
             if ([indexPathsToDelete count] > 0)
             {
-                DDLogDebug(@"Deleting: %@", [self idsFromIndexPaths:indexPathsToDelete referenceData:lastData]);
                 [tableView deleteRowsAtIndexPaths:indexPathsToDelete
                                  withRowAnimation:UITableViewRowAnimationFade];
             }
             
             if ([indexPathsToInsert count] > 0)
             {
-                DDLogDebug(@"Inserting: %@", [self idsFromIndexPaths:indexPathsToInsert referenceData:newData]);
                 [tableView insertRowsAtIndexPaths:indexPathsToInsert
                                  withRowAnimation:UITableViewRowAnimationRight];
             }
@@ -197,24 +168,43 @@ NSString *debugIDFromCellViewModel(id<PVGTableViewCellViewModel> viewModel)
             [tableView endUpdates];
         }
         
-        if ([indexPathsToReloadWithNoAnimation count] > 0)
-        {
-            DDLogDebug(@"Reloading with no animation: %@", [self idsFromIndexPaths:indexPathsToReloadWithNoAnimation referenceData:lastData]);
-        }
         return indexPathsToReloadWithNoAnimation;
+    }
+}
+
+- (void)assertOnDuplicateIdsInNewData:(NSArray *)newData lastData:(NSArray *)lastData
+{
+    NSMutableArray *newIds = [NSMutableArray array];
+    NSMutableSet *newIdsSet = [NSMutableSet set];
+    for (id<PVGTableViewCellViewModel> viewModel in newData)
+    {
+        NSString *debugID = debugIDFromCellViewModel(viewModel);
+        [newIds addObject:debugID];
+        [newIdsSet addObject:debugID];
+    }
+    
+    
+    if ([newIdsSet count] != [newData count])
+    {
+        // There are fewer ids in the data set than there are objects -> we have duplicates!
+        NSMutableArray *lastIds = [NSMutableArray array];
+        for (id<PVGTableViewCellViewModel> viewModel in lastData)
+        {
+            [lastIds addObject:debugIDFromCellViewModel(viewModel)];
+        }
+        
+        NSAssert(NO, @"Duplicate ids found when updating table view proxy with last data %@, new data %@", lastIds, newIds);
     }
 }
 
 - (NSArray *)idsFromIndexPaths:(NSArray *)indices referenceData:(NSArray *)referenceData
 {
-#if ENABLE_TABLE_VIEW_PROXY_DEBUG
-    return [[indices.rac_sequence map:^id(NSIndexPath *index) {
+    NSMutableArray *ids = [NSMutableArray array];
+    for (NSIndexPath *index in indices) {
         NSString *debugId = debugIDFromCellViewModel([referenceData objectAtIndex:index.row]);
-        return [NSString stringWithFormat:@"%@ -> %@", index, debugId];
-    }] array];
-#else
-    return indices;
-#endif
+        [ids addObject:[NSString stringWithFormat:@"%@ -> %@", index, debugId]];
+    }
+    return [ids copy];
 }
 
 @end

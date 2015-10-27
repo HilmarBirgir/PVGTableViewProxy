@@ -14,15 +14,13 @@
 
 #import "PVGTableViewSimpleDataSource.h"
 #import "PVGTableViewScrollCommand.h"
+#import "PVGTableViewRenderCommand.h"
 
 #import "PVGGenericTableViewProxyAnimator.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
-#define DDLogInfo NSLog
-#define DDLogDebug NSLog
-#define DDLogError NSLog
-
 NSInteger const LOAD_MORE_THRESHOLD = 15;
+static BOOL enableDebugAssertions = NO;
 
 @interface PVGTableViewProxy ()
 
@@ -40,13 +38,19 @@ NSInteger const LOAD_MORE_THRESHOLD = 15;
 
 @property (readwrite, atomic, weak) id<UITableViewDelegate> existingDelegate;
 
-@property (readwrite, atomic) RACTuple *pendingRenderCommand;
-
-@property (readwrite, atomic) NSTimer *timer;
-
 @end
 
 @implementation PVGTableViewProxy
+
++ (void)turnDebugAssertionsOn
+{
+    enableDebugAssertions = YES;
+}
+
++ (void)turnDebugAssertionsOff
+{
+    enableDebugAssertions = NO;
+}
 
 + (instancetype)proxyWithTableView:(UITableView *)tableView
                         dataSource:(RACSignal *)dataSource
@@ -86,31 +90,30 @@ NSInteger const LOAD_MORE_THRESHOLD = 15;
         
         self.didReloadSubject = [RACSubject subject];
         
-        self.animator = [[PVGGenericTableViewProxyAnimator alloc] init];
+        PVGGenericTableViewProxyAnimator *animator = [[PVGGenericTableViewProxyAnimator alloc] init];
+        animator.enableDebugAssertions = enableDebugAssertions;
+        self.animator = animator;
         
         self.scrollCommandsQueue = [NSMutableArray array];
-        
-        self.timer = [self runLoopTimer];
     }
     
     return self;
 }
 
-- (NSTimer *)runLoopTimer
+- (void)scheduleRenderCommand:(PVGTableViewRenderCommand *)renderCommand
 {
-    NSRunLoop *mainLoop = [NSRunLoop mainRunLoop];
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(runLoop) userInfo:nil repeats:YES];
-    [mainLoop addTimer:timer forMode:NSRunLoopCommonModes];
-    
-    return [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(runLoop) userInfo:nil repeats:YES];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self executeRenderCommand:renderCommand];
+    });
 }
 
-- (void)runLoop
+- (void)executeRenderCommand:(PVGTableViewRenderCommand *)renderCommand
 {
-    if (self.pendingRenderCommand)
+    // We want to make sure that we always run render commands before scroll commands
+    if (renderCommand)
     {
-        RACTupleUnpack(NSNumber *sectionIndex, NSArray *newViewModels) = self.pendingRenderCommand;
-        [self updatedSectionAtIndex:[sectionIndex integerValue] withNewData:newViewModels];
+        [self updatedSectionAtIndex:renderCommand.sectionIndex
+                        withNewData:renderCommand.viewModels];
     }
     
     if (self.pendingScrollCommand)
@@ -123,8 +126,6 @@ NSInteger const LOAD_MORE_THRESHOLD = 15;
             self.pendingScrollCommand = nil;
         }
     }
-    
-    self.pendingRenderCommand = nil;
 }
 
 - (void)setDataSource:(RACSignal *)dataSource
@@ -157,13 +158,15 @@ NSInteger const LOAD_MORE_THRESHOLD = 15;
     RACSignal *viewModelsSignal = [section.dataSource.viewModels ignore:nil];
     [[viewModelsSignal deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(NSArray *newViewModels) {
         @strongify(self);
-        self.pendingRenderCommand = RACTuplePack(@(sectionIndex), [newViewModels copy]);
+        [self scheduleRenderCommand:[PVGTableViewRenderCommand renderCommandForSection:sectionIndex
+                                                                            viewModels:[newViewModels copy]]];
     }];
     
     [[section.dataSource.scrollCommands ignore:nil] subscribeNext:^(PVGTableViewScrollCommand *command) {
         @strongify(self);
         BOOL success = [self scrollInSection:sectionIndex usingCommand:command];
         self.pendingScrollCommand = success ? nil : RACTuplePack(@(sectionIndex), command);
+        // FIXME: Do we need to schedule a render here?
     }];
 }
 
@@ -173,8 +176,6 @@ NSInteger const LOAD_MORE_THRESHOLD = 15;
     PVGTableViewSection *section = self.sections[sectionIndex];
     NSArray *lastData = [section.loadedData copy];
     section.loadedData = [newData copy];
-    
-    DDLogDebug(@"Received %@ items for section %@ which currently has %@ items.", @([newData count]), @(sectionIndex), @([lastData count]));
     
     id<PVGTableViewCellViewModel> firstViewModel = [section.loadedData firstObject];
     firstViewModel.sectionPosition = TableViewCellPositionFirst;
@@ -218,7 +219,7 @@ NSInteger const LOAD_MORE_THRESHOLD = 15;
     }
     else
     {
-        DDLogError(@"Unable to dequeue template cell for identifier: %@", identifier);
+        NSLog(@"Error: Unable to dequeue template cell for identifier: %@", identifier);
     }
 }
 
@@ -321,7 +322,6 @@ NSInteger const LOAD_MORE_THRESHOLD = 15;
     PVGTableViewSection *section = self.sections[indexPath.section];
     if (indexPath.row + LOAD_MORE_THRESHOLD >= [[section loadedData] count])
     {
-        DDLogDebug(@"Instructing section %@ to load more data", @(indexPath.section));
         [section loadMoreData];
     }
 }
@@ -409,7 +409,7 @@ NSInteger const LOAD_MORE_THRESHOLD = 15;
 {
     if (command == nil)
     {
-        return NO;
+        return YES; // No scroll command means successful scroll :troll:
     }
     
     if (sectionIndex >= [self.sections count] || sectionIndex < 0)
@@ -469,7 +469,6 @@ NSInteger const LOAD_MORE_THRESHOLD = 15;
     
     if (self.ongoingScrollAnimations > 0)
     {
-        DDLogDebug(@"Queueing scroll command: %@, %@, %@, Content Offset %@", indexPath, @(scrollPosition), @(command.animated), NSStringFromCGPoint(self.tableView.contentOffset));
         [self.scrollCommandsQueue addObject:RACTuplePack(@(sectionIndex), command)];
         return YES;
     }
@@ -489,8 +488,6 @@ NSInteger const LOAD_MORE_THRESHOLD = 15;
     
     if (originalOffset != offset)
     {
-        DDLogDebug(@"Executing scroll command: %@, %@, %@, Content Offset %@", indexPath, @(scrollPosition), @(command.animated), NSStringFromCGPoint(self.tableView.contentOffset));
-        
         [self.tableView setContentOffset:CGPointMake(self.tableView.contentOffset.x, originalOffset) animated:NO];
         [self.tableView scrollToRowAtIndexPath:indexPath
                               atScrollPosition:scrollPosition
@@ -545,20 +542,12 @@ NSInteger const LOAD_MORE_THRESHOLD = 15;
     
     if ([self.sections count] > 0)
     {
-        DDLogDebug(@"Scroll Animation Did End: Ongoing %@ Pending %@", @(self.ongoingScrollAnimations), self.scrollCommandsQueue);
-        
         if ([self.scrollCommandsQueue count] > 0)
         {
             RACTupleUnpack(NSNumber *sectionIndex, PVGTableViewScrollCommand *command) = self.scrollCommandsQueue[0];
             [self.scrollCommandsQueue removeObjectAtIndex:0];
             
             [self scrollInSection:[sectionIndex integerValue] usingCommand:command];
-        }
-        else if (self.pendingRenderCommand)
-        {
-            RACTupleUnpack(NSNumber *sectionIndex, NSArray *newViewModels) = self.pendingRenderCommand;
-            [self updatedSectionAtIndex:[sectionIndex integerValue] withNewData:newViewModels];
-            self.pendingRenderCommand = nil;
         }
     }
 }
