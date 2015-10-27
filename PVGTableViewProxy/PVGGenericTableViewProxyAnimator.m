@@ -11,8 +11,6 @@
 #import "PVGTableViewCell.h"
 #import "PVGTableViewCellViewModel.h"
 
-#define DDLogDebug NSLog
-
 NSString *debugIDFromCellViewModel(id<PVGTableViewCellViewModel> viewModel)
 {
     return [NSString stringWithFormat:@"%@:%@", [viewModel uniqueID], [viewModel cacheID]];
@@ -37,14 +35,12 @@ NSString *debugIDFromCellViewModel(id<PVGTableViewCellViewModel> viewModel)
 {
     if ([lastData count] == 0)
     {
-        DDLogDebug(@"Reloading whole section because last data as empty");
         [tableView reloadSections:[NSIndexSet indexSetWithIndex:sectionIndex]
                  withRowAnimation:UITableViewRowAnimationNone];
         return @[];
     }
     else if ([newData count] == 0)
     {
-        DDLogDebug(@"Reloading whole section because new data is empty");
         [tableView reloadSections:[NSIndexSet indexSetWithIndex:sectionIndex]
                  withRowAnimation:UITableViewRowAnimationFade];
         return @[];
@@ -159,14 +155,12 @@ NSString *debugIDFromCellViewModel(id<PVGTableViewCellViewModel> viewModel)
             
             if ([indexPathsToDelete count] > 0)
             {
-                DDLogDebug(@"Deleting: %@", [self idsFromIndexPaths:indexPathsToDelete referenceData:lastData]);
                 [tableView deleteRowsAtIndexPaths:indexPathsToDelete
                                  withRowAnimation:UITableViewRowAnimationFade];
             }
             
             if ([indexPathsToInsert count] > 0)
             {
-                DDLogDebug(@"Inserting: %@", [self idsFromIndexPaths:indexPathsToInsert referenceData:newData]);
                 [tableView insertRowsAtIndexPaths:indexPathsToInsert
                                  withRowAnimation:UITableViewRowAnimationRight];
             }
@@ -174,10 +168,6 @@ NSString *debugIDFromCellViewModel(id<PVGTableViewCellViewModel> viewModel)
             [tableView endUpdates];
         }
         
-        if ([indexPathsToReloadWithNoAnimation count] > 0)
-        {
-            DDLogDebug(@"Reloading with no animation: %@", [self idsFromIndexPaths:indexPathsToReloadWithNoAnimation referenceData:lastData]);
-        }
         return indexPathsToReloadWithNoAnimation;
     }
 }
@@ -203,10 +193,7 @@ NSString *debugIDFromCellViewModel(id<PVGTableViewCellViewModel> viewModel)
             [lastIds addObject:debugIDFromCellViewModel(viewModel)];
         }
         
-        DDLogDebug(@"Last data: %@", lastIds);
-        DDLogDebug(@"New data: %@", newIds);
-        
-        NSAssert(NO, @"Duplicate ids found when updating table view proxy with new data %@", newIds);
+        NSAssert(NO, @"Duplicate ids found when updating table view proxy with last data %@, new data %@", lastIds, newIds);
     }
 }
 

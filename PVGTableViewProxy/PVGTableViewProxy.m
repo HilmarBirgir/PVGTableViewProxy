@@ -19,11 +19,6 @@
 #import "PVGGenericTableViewProxyAnimator.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
-
-#define DDLogInfo NSLog
-#define DDLogDebug NSLog
-#define DDLogError NSLog
-
 NSInteger const LOAD_MORE_THRESHOLD = 15;
 static BOOL enableDebugAssertions = NO;
 
@@ -182,8 +177,6 @@ static BOOL enableDebugAssertions = NO;
     NSArray *lastData = [section.loadedData copy];
     section.loadedData = [newData copy];
     
-    DDLogDebug(@"Received %@ items for section %@ which currently has %@ items.", @([newData count]), @(sectionIndex), @([lastData count]));
-    
     id<PVGTableViewCellViewModel> firstViewModel = [section.loadedData firstObject];
     firstViewModel.sectionPosition = TableViewCellPositionFirst;
     
@@ -226,7 +219,7 @@ static BOOL enableDebugAssertions = NO;
     }
     else
     {
-        DDLogError(@"Unable to dequeue template cell for identifier: %@", identifier);
+        NSLog(@"Error: Unable to dequeue template cell for identifier: %@", identifier);
     }
 }
 
@@ -329,7 +322,6 @@ static BOOL enableDebugAssertions = NO;
     PVGTableViewSection *section = self.sections[indexPath.section];
     if (indexPath.row + LOAD_MORE_THRESHOLD >= [[section loadedData] count])
     {
-        DDLogDebug(@"Instructing section %@ to load more data", @(indexPath.section));
         [section loadMoreData];
     }
 }
@@ -477,7 +469,6 @@ static BOOL enableDebugAssertions = NO;
     
     if (self.ongoingScrollAnimations > 0)
     {
-        DDLogDebug(@"Queueing scroll command: %@, %@, %@, Content Offset %@", indexPath, @(scrollPosition), @(command.animated), NSStringFromCGPoint(self.tableView.contentOffset));
         [self.scrollCommandsQueue addObject:RACTuplePack(@(sectionIndex), command)];
         return YES;
     }
@@ -497,8 +488,6 @@ static BOOL enableDebugAssertions = NO;
     
     if (originalOffset != offset)
     {
-        DDLogDebug(@"Executing scroll command: %@, %@, %@, Content Offset %@", indexPath, @(scrollPosition), @(command.animated), NSStringFromCGPoint(self.tableView.contentOffset));
-        
         [self.tableView setContentOffset:CGPointMake(self.tableView.contentOffset.x, originalOffset) animated:NO];
         [self.tableView scrollToRowAtIndexPath:indexPath
                               atScrollPosition:scrollPosition
@@ -553,8 +542,6 @@ static BOOL enableDebugAssertions = NO;
     
     if ([self.sections count] > 0)
     {
-        DDLogDebug(@"Scroll Animation Did End: Ongoing %@ Pending %@", @(self.ongoingScrollAnimations), self.scrollCommandsQueue);
-        
         if ([self.scrollCommandsQueue count] > 0)
         {
             RACTupleUnpack(NSNumber *sectionIndex, PVGTableViewScrollCommand *command) = self.scrollCommandsQueue[0];
