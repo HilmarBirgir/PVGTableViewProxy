@@ -72,6 +72,12 @@
     
     OCMStub([self.mockSection loadedData]).andReturn(data);
     
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Calls loadMoreData on section"];
+    
+    OCMStub([self.mockSection loadMoreData]).andDo(^(NSInvocation *invocation) {
+        [expectation fulfill];
+    });
+    
     PVGTableViewProxy *proxy = [PVGTableViewProxy proxyWithTableView:self.mockTableView
                                                        builder:^(id<PVGTableViewProxyConfig> builder) {
                                                            [builder addSection:self.mockSection atIndex:0];
@@ -82,7 +88,7 @@
     
     [proxy tableView:self.mockTableView willDisplayCell:mockCell forRowAtIndexPath:indexPath];
     
-    OCMVerify([self.mockSection loadMoreData]);
+    [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
 @end

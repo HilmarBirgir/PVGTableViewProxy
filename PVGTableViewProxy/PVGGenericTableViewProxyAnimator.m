@@ -183,17 +183,33 @@ NSString *debugIDFromCellViewModel(id<PVGTableViewCellViewModel> viewModel)
         [newIdsSet addObject:debugID];
     }
     
-    
     if ([newIdsSet count] != [newData count])
     {
         // There are fewer ids in the data set than there are objects -> we have duplicates!
-        NSMutableArray *lastIds = [NSMutableArray array];
+        NSMutableArray<NSString *> *lastIds = [NSMutableArray array];
         for (id<PVGTableViewCellViewModel> viewModel in lastData)
         {
             [lastIds addObject:debugIDFromCellViewModel(viewModel)];
         }
         
-        NSAssert(NO, @"Duplicate ids found when updating table view proxy with last data %@, new data %@", lastIds, newIds);
+        NSMutableDictionary<NSString *, NSNumber *> *counters = [NSMutableDictionary dictionary];
+        for (NSString *debugId in newIds)
+        {
+            NSNumber *counter = counters[debugId] ?: @0;
+            counters[debugId] = @([counter integerValue] + 1);
+        }
+        
+        NSMutableArray<NSString *> *duplicates = [NSMutableArray array];
+        for (NSString *key in counters)
+        {
+            NSNumber *counter = counters[key];
+            if ([counter integerValue] > 1)
+            {
+                [duplicates addObject:[NSString stringWithFormat:@"%@: %@", key, counter]];
+            }
+        }
+        
+        NSAssert(NO, @"Duplicate ids found when updating table view proxy with last data %@, new data %@, counters: %@", lastIds, newIds, duplicates);
     }
 }
 
