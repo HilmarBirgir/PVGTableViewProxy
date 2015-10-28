@@ -36,6 +36,8 @@ static BOOL enableDebugAssertions = NO;
 @property (readwrite, atomic) NSInteger ongoingScrollAnimations;
 @property (readwrite, atomic) NSMutableArray *scrollCommandsQueue;
 
+@property (readwrite, atomic) PVGTableViewRenderCommand *pendingRenderCommand;
+
 @property (readwrite, atomic, weak) id<UITableViewDelegate> existingDelegate;
 
 @end
@@ -100,20 +102,18 @@ static BOOL enableDebugAssertions = NO;
     return self;
 }
 
-- (void)scheduleRenderCommand:(PVGTableViewRenderCommand *)renderCommand
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self executeRenderCommand:renderCommand];
-    });
-}
-
 - (void)executeRenderCommand:(PVGTableViewRenderCommand *)renderCommand
 {
-    // We want to make sure that we always run render commands before scroll commands
+    if (self.ongoingScrollAnimations > 0)
+    {
+        self.pendingRenderCommand = renderCommand;
+        return;
+    }
+    
     if (renderCommand)
     {
-        [self updatedSectionAtIndex:renderCommand.sectionIndex
-                        withNewData:renderCommand.viewModels];
+        [self updateSectionAtIndex:renderCommand.sectionIndex
+                       withNewData:renderCommand.viewModels];
     }
     
     if (self.pendingScrollCommand)
@@ -156,9 +156,9 @@ static BOOL enableDebugAssertions = NO;
     }
     @weakify(self);
     RACSignal *viewModelsSignal = [section.dataSource.viewModels ignore:nil];
-    [[viewModelsSignal deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(NSArray *newViewModels) {
+    [viewModelsSignal subscribeNext:^(NSArray *newViewModels) {
         @strongify(self);
-        [self scheduleRenderCommand:[PVGTableViewRenderCommand renderCommandForSection:sectionIndex
+        [self executeRenderCommand:[PVGTableViewRenderCommand renderCommandForSection:sectionIndex
                                                                             viewModels:[newViewModels copy]]];
     }];
     
@@ -166,16 +166,16 @@ static BOOL enableDebugAssertions = NO;
         @strongify(self);
         BOOL success = [self scrollInSection:sectionIndex usingCommand:command];
         self.pendingScrollCommand = success ? nil : RACTuplePack(@(sectionIndex), command);
-        // FIXME: Do we need to schedule a render here?
     }];
 }
 
-- (void)updatedSectionAtIndex:(NSInteger)sectionIndex
-                  withNewData:(NSArray *)newData
+- (void)updateSectionAtIndex:(NSInteger)sectionIndex
+                 withNewData:(NSArray *)newData
 {
     PVGTableViewSection *section = self.sections[sectionIndex];
-    NSArray *lastData = [section.loadedData copy];
-    section.loadedData = [newData copy];
+    
+    NSArray *lastData = section.loadedData;
+    section.loadedData = newData;
     
     id<PVGTableViewCellViewModel> firstViewModel = [section.loadedData firstObject];
     firstViewModel.sectionPosition = TableViewCellPositionFirst;
@@ -187,7 +187,7 @@ static BOOL enableDebugAssertions = NO;
                                                                         sectionIndex:sectionIndex
                                                                             lastData:lastData
                                                                              newData:section.loadedData];
-    
+
     if ([indexPathsToReloadWithNoAnimation count] > 0)
     {
         for (NSIndexPath *indexPath in indexPathsToReloadWithNoAnimation)
@@ -322,7 +322,11 @@ static BOOL enableDebugAssertions = NO;
     PVGTableViewSection *section = self.sections[indexPath.section];
     if (indexPath.row + LOAD_MORE_THRESHOLD >= [[section loadedData] count])
     {
-        [section loadMoreData];
+        // We can't to this inline because telling a section to laod more data may trigger an syncronous
+        // update to the table view in a place where it isn't supported.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [section loadMoreData];
+        });
     }
 }
 
@@ -548,6 +552,11 @@ static BOOL enableDebugAssertions = NO;
             [self.scrollCommandsQueue removeObjectAtIndex:0];
             
             [self scrollInSection:[sectionIndex integerValue] usingCommand:command];
+        }
+        else if (self.pendingRenderCommand)
+        {
+            [self updateSectionAtIndex:self.pendingRenderCommand.sectionIndex withNewData:self.pendingRenderCommand.viewModels];
+            self.pendingRenderCommand = nil;
         }
     }
 }

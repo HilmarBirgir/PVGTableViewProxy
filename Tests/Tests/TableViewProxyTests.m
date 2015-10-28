@@ -79,11 +79,10 @@
     OCMVerifyAll(mockTableView);
 }
 
-- (void)test_subscribes_to_signal_when_using_builder_and_delivers_on_main_thread
+- (void)test_subscribes_to_signal_when_using_builder
 {
     id mockSignal = OCMClassMock([RACSignal class]);
     OCMExpect([mockSignal ignore:nil]).andReturn(mockSignal);
-    OCMExpect([mockSignal deliverOn:OCMOCK_ANY]).andReturn(mockSignal);
     OCMExpect([mockSignal subscribeNext:OCMOCK_ANY]);
     
     PVGTableViewProxy *proxy = [PVGTableViewProxy proxyWithTableView:nil
@@ -671,6 +670,9 @@
                                                                                 animated:YES
                                                                                 uniqueID:nil];
     
+    OCMExpect([self.mockTableView contentOffset]).andReturn(CGPointMake(0, 0));
+    OCMExpect([self.mockTableView contentOffset]).andReturn(CGPointMake(0, 10));
+    
     XCTAssertTrue([proxy scrollInSection:0 usingCommand:firstCommand]);
     
     @weakify(self)
@@ -708,6 +710,9 @@
     PVGTableViewScrollCommand *firstCommand = [PVGTableViewScrollCommand commandWithType:ScrollCommandTypeBottom
                                                                                 animated:YES
                                                                                 uniqueID:nil];
+    
+    OCMExpect([self.mockTableView contentOffset]).andReturn(CGPointMake(0, 0));
+    OCMExpect([self.mockTableView contentOffset]).andReturn(CGPointMake(0, 10));
     
     XCTAssertTrue([proxy scrollInSection:0 usingCommand:firstCommand]);
     
