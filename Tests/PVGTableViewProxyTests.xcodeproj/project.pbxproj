@@ -7,13 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		021A6D2B1BD67739005215A7 /* TableViewProxyLoadMoreTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 021A6D271BD67739005215A7 /* TableViewProxyLoadMoreTests.m */; settings = {ASSET_TAGS = (); }; };
-		021A6D2C1BD67739005215A7 /* TableViewProxyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 021A6D281BD67739005215A7 /* TableViewProxyTests.m */; settings = {ASSET_TAGS = (); }; };
-		021A6D2D1BD67739005215A7 /* TableViewScrollCommandTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 021A6D291BD67739005215A7 /* TableViewScrollCommandTests.m */; settings = {ASSET_TAGS = (); }; };
-		021A6D2E1BD67739005215A7 /* TableViewSectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 021A6D2A1BD67739005215A7 /* TableViewSectionTests.m */; settings = {ASSET_TAGS = (); }; };
-		02B7B4361BD6CC7C0034A4E5 /* MockPVGTableViewCellViewModelDidSelect.m in Sources */ = {isa = PBXBuildFile; fileRef = 02B7B4351BD6CC7C0034A4E5 /* MockPVGTableViewCellViewModelDidSelect.m */; settings = {ASSET_TAGS = (); }; };
-		02BA88EF1BD7F134007BEF68 /* GenericTableViewProxyAnimatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 02BA88EE1BD7F134007BEF68 /* GenericTableViewProxyAnimatorTests.m */; settings = {ASSET_TAGS = (); }; };
-		02E62EDE1BD69F1700BF8EC8 /* MockPVGTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 02E62EDD1BD69F1700BF8EC8 /* MockPVGTableViewCell.m */; settings = {ASSET_TAGS = (); }; };
+		021A6D2B1BD67739005215A7 /* TableViewProxyLoadMoreTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 021A6D271BD67739005215A7 /* TableViewProxyLoadMoreTests.m */; };
+		021A6D2C1BD67739005215A7 /* TableViewProxyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 021A6D281BD67739005215A7 /* TableViewProxyTests.m */; };
+		021A6D2D1BD67739005215A7 /* TableViewScrollCommandTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 021A6D291BD67739005215A7 /* TableViewScrollCommandTests.m */; };
+		021A6D2E1BD67739005215A7 /* TableViewSectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 021A6D2A1BD67739005215A7 /* TableViewSectionTests.m */; };
+		027C13D71BE1080800C2C8F5 /* TableViewProxyRenderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 027C13D61BE1080800C2C8F5 /* TableViewProxyRenderTests.m */; };
+		02B7B4361BD6CC7C0034A4E5 /* MockPVGTableViewCellViewModelDidSelect.m in Sources */ = {isa = PBXBuildFile; fileRef = 02B7B4351BD6CC7C0034A4E5 /* MockPVGTableViewCellViewModelDidSelect.m */; };
+		02BA88EF1BD7F134007BEF68 /* GenericTableViewProxyAnimatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 02BA88EE1BD7F134007BEF68 /* GenericTableViewProxyAnimatorTests.m */; };
+		02E62EDE1BD69F1700BF8EC8 /* MockPVGTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 02E62EDD1BD69F1700BF8EC8 /* MockPVGTableViewCell.m */; };
 		B61F4F719C1E4C05EB0C01D1 /* libPods-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9DC5FE07A91F2EE454AD62E /* libPods-ios.a */; };
 /* End PBXBuildFile section */
 
@@ -25,6 +26,7 @@
 		021A6D291BD67739005215A7 /* TableViewScrollCommandTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewScrollCommandTests.m; sourceTree = "<group>"; };
 		021A6D2A1BD67739005215A7 /* TableViewSectionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewSectionTests.m; sourceTree = "<group>"; };
 		021A6D311BD67975005215A7 /* TestDependencies.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TestDependencies.h; path = "Test Utils/TestDependencies.h"; sourceTree = "<group>"; };
+		027C13D61BE1080800C2C8F5 /* TableViewProxyRenderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewProxyRenderTests.m; sourceTree = "<group>"; };
 		02B7B4341BD6CC7C0034A4E5 /* MockPVGTableViewCellViewModelDidSelect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MockPVGTableViewCellViewModelDidSelect.h; path = Mocks/MockPVGTableViewCellViewModelDidSelect.h; sourceTree = "<group>"; };
 		02B7B4351BD6CC7C0034A4E5 /* MockPVGTableViewCellViewModelDidSelect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MockPVGTableViewCellViewModelDidSelect.m; path = Mocks/MockPVGTableViewCellViewModelDidSelect.m; sourceTree = "<group>"; };
 		02BA88EE1BD7F134007BEF68 /* GenericTableViewProxyAnimatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericTableViewProxyAnimatorTests.m; sourceTree = "<group>"; };
@@ -72,11 +74,12 @@
 			isa = PBXGroup;
 			children = (
 				02BA88EE1BD7F134007BEF68 /* GenericTableViewProxyAnimatorTests.m */,
+				021A6D231BD67725005215A7 /* Info.plist */,
 				021A6D271BD67739005215A7 /* TableViewProxyLoadMoreTests.m */,
+				027C13D61BE1080800C2C8F5 /* TableViewProxyRenderTests.m */,
 				021A6D281BD67739005215A7 /* TableViewProxyTests.m */,
 				021A6D291BD67739005215A7 /* TableViewScrollCommandTests.m */,
 				021A6D2A1BD67739005215A7 /* TableViewSectionTests.m */,
-				021A6D231BD67725005215A7 /* Info.plist */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -224,6 +227,7 @@
 				021A6D2E1BD67739005215A7 /* TableViewSectionTests.m in Sources */,
 				02E62EDE1BD69F1700BF8EC8 /* MockPVGTableViewCell.m in Sources */,
 				021A6D2C1BD67739005215A7 /* TableViewProxyTests.m in Sources */,
+				027C13D71BE1080800C2C8F5 /* TableViewProxyRenderTests.m in Sources */,
 				021A6D2B1BD67739005215A7 /* TableViewProxyLoadMoreTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
