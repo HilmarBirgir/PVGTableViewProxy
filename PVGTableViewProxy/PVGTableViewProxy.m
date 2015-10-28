@@ -322,7 +322,7 @@ static BOOL enableDebugAssertions = NO;
     PVGTableViewSection *section = self.sections[indexPath.section];
     if (indexPath.row + LOAD_MORE_THRESHOLD >= [[section loadedData] count])
     {
-        // We can't to this inline because telling a section to laod more data may trigger an syncronous
+        // We can't do this inline because telling a section to load more data may trigger an syncronous
         // update to the table view in a place where it isn't supported.
         dispatch_async(dispatch_get_main_queue(), ^{
             [section loadMoreData];

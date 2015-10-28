@@ -72,7 +72,6 @@
     
     OCMStub([self.mockSection loadedData]).andReturn(data);
     
-    
     XCTestExpectation *expectation = [self expectationWithDescription:@"Calls loadMoreData on section"];
     
     OCMStub([self.mockSection loadMoreData]).andDo(^(NSInvocation *invocation) {
