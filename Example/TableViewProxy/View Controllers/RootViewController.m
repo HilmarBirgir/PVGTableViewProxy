@@ -10,6 +10,7 @@
 #import "StaticListViewController.h"
 #import "InfiniteListViewController.h"
 #import "ForceUpdateListViewController.h"
+#import "SectionsListViewController.h"
 
 @interface RootViewController ()
 
@@ -39,6 +40,14 @@
     {
         ForceUpdateListViewModel *viewModel = [[ForceUpdateListViewModel alloc] init];
         ForceUpdateListViewController *viewController = [[ForceUpdateListViewController alloc] init];
+        viewController.viewModel = viewModel;
+        
+        [self.navigationController pushViewController:viewController animated:YES];
+    }
+    else if (indexPath.row == 3)
+    {
+        SectionsListViewModel *viewModel = [SectionsListViewModel new];
+        SectionsListViewController *viewController = [SectionsListViewController new];
         viewController.viewModel = viewModel;
         
         [self.navigationController pushViewController:viewController animated:YES];
