@@ -175,14 +175,16 @@ static BOOL enableDebugAssertions = NO;
     PVGTableViewSection *section = self.sections[sectionIndex];
     
     NSArray *lastData = section.loadedData;
-    section.loadedData = newData;
+    
+    section.loadedData = [self removeViewModelsWithDuplicateUniqueIDsFromArray:newData];
     
     id<PVGTableViewCellViewModel> firstViewModel = [section.loadedData firstObject];
     firstViewModel.sectionPosition = TableViewCellPositionFirst;
     
     id<PVGTableViewCellViewModel> lastViewModel = [section.loadedData lastObject];
     lastViewModel.sectionPosition = TableViewCellPositionLast;
-    
+
+
     NSArray *indexPathsToReloadWithNoAnimation = [self.animator animateWithTableView:self.tableView
                                                                         sectionIndex:sectionIndex
                                                                             lastData:lastData
@@ -561,11 +563,31 @@ static BOOL enableDebugAssertions = NO;
     }
 }
 
-#pragma mark - Helper
+#pragma mark - Helpers
 
 - (UITableViewCell<PVGTableViewCell> *)templateCellForReuseIdentifier:(NSString *)reuseIdentifier;
 {
     return self.templateCells[reuseIdentifier];
+}
+
+- (NSArray *)removeViewModelsWithDuplicateUniqueIDsFromArray:(NSArray *)newData
+{
+    NSMutableArray *array = [NSMutableArray array];
+    
+    NSMutableSet *addedIds = [NSMutableSet set];
+    
+    for (id<PVGTableViewCellViewModel> viewModel in newData)
+    {
+        NSString *uniqueID = [viewModel uniqueID];
+        
+        if ([addedIds containsObject:uniqueID] == NO)
+        {
+            [array addObject:viewModel];
+            [addedIds addObject:uniqueID];
+        }
+    }
+    
+    return array;
 }
 
 - (void)dealloc

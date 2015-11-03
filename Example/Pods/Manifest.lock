@@ -14,7 +14,7 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   PVGTableViewProxy:
-    :path: "../"
+    :path: ../
 
 SPEC CHECKSUMS:
   PVGTableViewProxy: f2cd021da863b3c1ea193541c81772bc94356506
