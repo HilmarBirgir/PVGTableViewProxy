@@ -26,14 +26,12 @@
 
 @implementation TableViewProxyRenderTests
 
-- (void)setUp {
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-}
-
 - (void)test_when_there_are_no_ongoing_scroll_animations_execute_render_will_update_the_table_view
 {
-    NSArray *viewModels = @[OCMProtocolMock(@protocol(PVGTableViewCellViewModel))];
+    id mockViewModel = OCMProtocolMock(@protocol(PVGTableViewCellViewModel));
+    OCMStub([mockViewModel uniqueID]).andReturn(@"uuid");
+    
+    NSArray *viewModels = @[mockViewModel];
     PVGTableViewSimpleDataSource *dataSource = [PVGTableViewSimpleDataSource dataSourceWithViewModels:[RACSignal return:viewModels]];
     PVGTableViewSection *section = [PVGTableViewSection sectionWithDataSource:dataSource];
     

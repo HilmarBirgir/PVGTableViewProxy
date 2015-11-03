@@ -12,6 +12,7 @@
 #import "PVGTableViewCellViewModel.h"
 #import "PVGTableViewProxy.h"
 #import "PVGTableViewSectionHeader.h"
+#import "PVGTableViewProxyAnimator.h"
 
 
 @interface PVGTableViewProxy (Testing)
@@ -26,6 +27,11 @@
 
 - (BOOL)scrollInSection:(NSInteger)sectionIndex
            usingCommand:(PVGTableViewScrollCommand *)command;
+
+- (void)updateSectionAtIndex:(NSInteger)sectionIndex
+                 withNewData:(NSArray *)newData;
+
+- (NSArray *)removeViewModelsWithDuplicateUniqueIDsFromArray:(NSArray *)newData;
 
 @end
 
@@ -288,6 +294,111 @@
     XCTAssertEqualObjects(view, mockHeaderView);
     
     OCMVerifyAll(mockHeaderView);
+}
+
+#pragma mark - Remove duplicates
+
+- (void)test_proxy_remove_duplicates_removes_all_view_models_with_duplicate_unique_ids_except_one
+{
+    id mockViewModel = OCMProtocolMock(@protocol(PVGTableViewCellViewModel));
+    OCMStub([mockViewModel uniqueID]).andReturn(@"uuid");
+    id mockViewModel2 = OCMProtocolMock(@protocol(PVGTableViewCellViewModel));
+    OCMStub([mockViewModel2 uniqueID]).andReturn(@"uuid");
+    
+    NSArray *newData = @[mockViewModel, mockViewModel2];
+    
+    PVGTableViewProxy *proxy = [PVGTableViewProxy proxyWithTableView:self.mockTableView
+                                                          dataSource:nil
+                                                             builder:^(id<PVGTableViewProxyConfig> newProxy) {}];
+    
+    
+    NSArray *results = [proxy removeViewModelsWithDuplicateUniqueIDsFromArray:newData];
+    
+    XCTAssertEqual(1, [results count]);
+}
+
+- (void)test_proxy_remove_duplicates_preserves_the_order_of_new_data_view_models
+{
+    id mockViewModel = OCMProtocolMock(@protocol(PVGTableViewCellViewModel));
+    OCMStub([mockViewModel uniqueID]).andReturn(@"uuid");
+    
+    id mockViewModel2 = OCMProtocolMock(@protocol(PVGTableViewCellViewModel));
+    OCMStub([mockViewModel2 uniqueID]).andReturn(@"uuid");
+    
+    id mockViewModel3 = OCMProtocolMock(@protocol(PVGTableViewCellViewModel));
+    OCMStub([mockViewModel3 uniqueID]).andReturn(@"uuid3");
+    
+    id mockViewModel4 = OCMProtocolMock(@protocol(PVGTableViewCellViewModel));
+    OCMStub([mockViewModel4 uniqueID]).andReturn(@"uuid4");
+    
+    id mockViewModel5 = OCMProtocolMock(@protocol(PVGTableViewCellViewModel));
+    OCMStub([mockViewModel5 uniqueID]).andReturn(@"uuid5");
+    
+    NSArray *newData = @[mockViewModel5, mockViewModel, mockViewModel4, mockViewModel3, mockViewModel];
+    
+    PVGTableViewProxy *proxy = [PVGTableViewProxy proxyWithTableView:self.mockTableView
+                                                          dataSource:nil
+                                                             builder:^(id<PVGTableViewProxyConfig> newProxy) {}];
+    
+    NSArray *results = [proxy removeViewModelsWithDuplicateUniqueIDsFromArray:newData];
+    
+    XCTAssertEqual(4, [results count]);
+    
+    XCTAssertEqualObjects(@"uuid5", [results[0] uniqueID]);
+    XCTAssertEqualObjects(@"uuid", [results[1] uniqueID]);
+    XCTAssertEqualObjects(@"uuid4", [results[2] uniqueID]);
+    XCTAssertEqualObjects(@"uuid3", [results[3] uniqueID]);
+}
+
+- (void)test_proxy_removes_duplicates_handles_old_data_being_nil
+{
+    id mockViewModel = OCMProtocolMock(@protocol(PVGTableViewCellViewModel));
+    OCMStub([mockViewModel uniqueID]).andReturn(@"uuid");
+    
+    NSArray *newData = @[mockViewModel];
+    
+    PVGTableViewProxy *proxy = [PVGTableViewProxy proxyWithTableView:self.mockTableView
+                                                          dataSource:nil
+                                                             builder:^(id<PVGTableViewProxyConfig> newProxy) {}];
+    
+    NSArray *results = [proxy removeViewModelsWithDuplicateUniqueIDsFromArray:newData];
+    
+    XCTAssertEqual(1, [results count]);
+    XCTAssertEqualObjects(mockViewModel, results[0]);
+}
+
+- (void)test_proxy_removes_duplicate_ids_from_new_view_models_before_calling_animator
+{
+    id mockAnimator = OCMProtocolMock(@protocol(PVGTableViewProxyAnimator));
+    OCMExpect([mockAnimator animateWithTableView:self.mockTableView sectionIndex:0 lastData:OCMOCK_ANY newData:[OCMArg checkWithBlock:^BOOL(NSArray *viewModels) {
+        
+        return [viewModels count] == 1 && [[viewModels[0] uniqueID] isEqualToString:@"uuid"];
+    }]]);
+    
+    RACSubject *dataSource = [RACSubject subject];
+    PVGTableViewProxy *proxy = [PVGTableViewProxy proxyWithTableView:self.mockTableView
+                                                          dataSource:dataSource
+                                                             builder:^(id<PVGTableViewProxyConfig> newProxy) {}];
+    proxy.animator = mockAnimator;
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"removes duplicates ids before animating"];
+    
+    @weakify(self)
+    [proxy.didReload subscribeNext:^(id x) {
+        @strongify(self)
+        OCMVerifyAll(mockAnimator);
+        [expectation fulfill];
+    }];
+    
+    id mockViewModel = OCMProtocolMock(@protocol(PVGTableViewCellViewModel));
+    OCMStub([mockViewModel uniqueID]).andReturn(@"uuid");
+    
+    id mockViewModel2 = OCMProtocolMock(@protocol(PVGTableViewCellViewModel));
+    OCMStub([mockViewModel2 uniqueID]).andReturn(@"uuid");
+    
+    [dataSource sendNext:@[mockViewModel, mockViewModel2]];
+    
+    [self waitForExpectationsWithTimeout:0.1 handler:nil];
 }
 
 #pragma mark - Headers
