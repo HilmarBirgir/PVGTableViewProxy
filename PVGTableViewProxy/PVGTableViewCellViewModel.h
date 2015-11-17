@@ -15,6 +15,8 @@ typedef NS_ENUM(NSUInteger, TableViewCellPosition) {
     TableViewCellPositionLast
 };
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol PVGTableViewCellViewModel <NSObject>
 
 @property (readonly, atomic, copy) NSString *reuseIdentifier;
@@ -62,3 +64,5 @@ static const float COLLECTION_VIEW_SIDE_MARGIN = 6;
 - (void)seeAll;
 
 @end
+
+NS_ASSUME_NONNULL_END

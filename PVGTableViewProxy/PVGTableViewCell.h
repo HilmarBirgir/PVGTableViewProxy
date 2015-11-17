@@ -8,9 +8,11 @@
 
 #import "PVGTableViewCellViewModel.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol PVGTableViewCell <NSObject>
 
-@property (readwrite, nonatomic) id<PVGTableViewCellViewModel> viewModel;
+@property (nullable, readwrite, nonatomic) id<PVGTableViewCellViewModel> viewModel;
 
 - (NSNumber *)height;
 - (void)setup;
@@ -21,3 +23,5 @@
 - (void)willDisplay;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -9,7 +9,6 @@
 #import "PVGGenericTableViewProxyAnimator.h"
 
 #import "PVGTableViewCell.h"
-#import "PVGTableViewCellViewModel.h"
 
 NSString *debugIDFromCellViewModel(id<PVGTableViewCellViewModel> viewModel)
 {
@@ -18,9 +17,9 @@ NSString *debugIDFromCellViewModel(id<PVGTableViewCellViewModel> viewModel)
 
 @implementation PVGGenericTableViewProxyAnimator
 
-- (NSSet *)uniqueIDsFromViewModels:(NSArray *)viewModels
+- (NSSet<NSString *> *)uniqueIDsFromViewModels:(NSArray<NSObject <PVGTableViewCellViewModel> *> *)viewModels
 {
-    NSMutableSet *uniqueIDs = [NSMutableSet set];
+    NSMutableSet<NSString *> *uniqueIDs = [NSMutableSet set];
     for (id<PVGTableViewCellViewModel> cellViewModel in viewModels)
     {
         [uniqueIDs addObject:cellViewModel.uniqueID];
@@ -28,10 +27,10 @@ NSString *debugIDFromCellViewModel(id<PVGTableViewCellViewModel> viewModel)
     return uniqueIDs;
 }
 
-- (NSArray *)animateWithTableView:(UITableView *)tableView
-                     sectionIndex:(NSInteger)sectionIndex
-                         lastData:(NSArray *)lastData
-                          newData:(NSArray *)newData
+- (NSArray<NSIndexPath *> *)animateWithTableView:(UITableView *)tableView
+                                    sectionIndex:(NSInteger)sectionIndex
+                                        lastData:(NSArray<NSObject <PVGTableViewCellViewModel> *> *)lastData
+                                         newData:(NSArray<NSObject <PVGTableViewCellViewModel> *> *)newData
 {
     if ([lastData count] == 0)
     {
@@ -47,15 +46,15 @@ NSString *debugIDFromCellViewModel(id<PVGTableViewCellViewModel> viewModel)
     }
     else
     {
-        NSMutableArray *indexPathsToReloadWithNoAnimation = [NSMutableArray array];
-        NSMutableArray *indexPathsToDelete = [NSMutableArray array];
-        NSMutableArray *indexPathsToInsert = [NSMutableArray array];
+        NSMutableArray<NSIndexPath *> *indexPathsToReloadWithNoAnimation = [NSMutableArray array];
+        NSMutableArray<NSIndexPath *> *indexPathsToDelete = [NSMutableArray array];
+        NSMutableArray<NSIndexPath *> *indexPathsToInsert = [NSMutableArray array];
         
-        NSSet *lastDataUniqueIDs = [self uniqueIDsFromViewModels:lastData];
-        NSSet *newDataUniqueIDs = [self uniqueIDsFromViewModels:newData];
+        NSSet<NSString *> *lastDataUniqueIDs = [self uniqueIDsFromViewModels:lastData];
+        NSSet<NSString *> *newDataUniqueIDs = [self uniqueIDsFromViewModels:newData];
         
-        NSMutableArray *lastDataStillHere = [NSMutableArray array];
-        NSMutableArray *lastDataStillHereIndices = [NSMutableArray array];
+        NSMutableArray<NSObject <PVGTableViewCellViewModel> *> *lastDataStillHere = [NSMutableArray array];
+        NSMutableArray<NSNumber *> *lastDataStillHereIndices = [NSMutableArray array];
         
         for (NSInteger i = 0; i != [lastData count]; i++)
         {
@@ -76,8 +75,8 @@ NSString *debugIDFromCellViewModel(id<PVGTableViewCellViewModel> viewModel)
             }
         }
         
-        NSMutableArray *newDataStillHere = [NSMutableArray array];
-        NSMutableArray *newDataStillHereIndices = [NSMutableArray array];
+        NSMutableArray<NSObject <PVGTableViewCellViewModel> *> *newDataStillHere = [NSMutableArray array];
+        NSMutableArray<NSNumber *> *newDataStillHereIndices = [NSMutableArray array];
         
         for (NSInteger i = 0; i != [newData count]; i++)
         {
@@ -172,10 +171,10 @@ NSString *debugIDFromCellViewModel(id<PVGTableViewCellViewModel> viewModel)
     }
 }
 
-- (void)assertOnDuplicateIdsInNewData:(NSArray *)newData lastData:(NSArray *)lastData
+- (void)assertOnDuplicateIdsInNewData:(NSArray<NSObject <PVGTableViewCellViewModel> *> *)newData lastData:(NSArray<NSObject <PVGTableViewCellViewModel> *> *)lastData
 {
-    NSMutableArray *newIds = [NSMutableArray array];
-    NSMutableSet *newIdsSet = [NSMutableSet set];
+    NSMutableArray<NSString *> *newIds = [NSMutableArray array];
+    NSMutableSet<NSString *> *newIdsSet = [NSMutableSet set];
     for (id<PVGTableViewCellViewModel> viewModel in newData)
     {
         NSString *debugID = debugIDFromCellViewModel(viewModel);
@@ -211,16 +210,6 @@ NSString *debugIDFromCellViewModel(id<PVGTableViewCellViewModel> viewModel)
         
         NSAssert(NO, @"Duplicate ids found when updating table view proxy with last data %@, new data %@, counters: %@", lastIds, newIds, duplicates);
     }
-}
-
-- (NSArray *)idsFromIndexPaths:(NSArray *)indices referenceData:(NSArray *)referenceData
-{
-    NSMutableArray *ids = [NSMutableArray array];
-    for (NSIndexPath *index in indices) {
-        NSString *debugId = debugIDFromCellViewModel([referenceData objectAtIndex:index.row]);
-        [ids addObject:[NSString stringWithFormat:@"%@ -> %@", index, debugId]];
-    }
-    return [ids copy];
 }
 
 @end

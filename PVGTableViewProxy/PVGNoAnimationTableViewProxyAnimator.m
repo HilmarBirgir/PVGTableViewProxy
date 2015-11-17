@@ -10,10 +10,10 @@
 
 @implementation PVGNoAnimationTableViewProxyAnimator
 
-- (NSArray *)animateWithTableView:(UITableView *)tableView
-                     sectionIndex:(NSInteger)sectionIndex
-                         lastData:(NSArray *)lastData
-                          newData:(NSArray *)newData
+- (NSArray<NSIndexPath *> *)animateWithTableView:(UITableView *)tableView
+                                    sectionIndex:(NSInteger)sectionIndex
+                                        lastData:(NSArray<NSObject <PVGTableViewCellViewModel> *> *)lastData
+                                         newData:(NSArray<NSObject <PVGTableViewCellViewModel> *> *)newData
 {
     [tableView reloadData];
     return @[];

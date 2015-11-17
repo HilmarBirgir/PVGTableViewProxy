@@ -12,7 +12,7 @@
 
 @protocol PVGTableViewSectionHeader <NSObject>
 
-@property (readwrite, atomic) id<PVGTableViewSectionHeaderViewModel> viewModel;
+@property (nullable, readwrite, atomic) id<PVGTableViewSectionHeaderViewModel> viewModel;
 
 - (void)setup;
 

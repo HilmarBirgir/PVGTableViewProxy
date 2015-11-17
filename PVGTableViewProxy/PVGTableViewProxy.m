@@ -28,13 +28,13 @@ static BOOL enableDebugAssertions = NO;
 // but we do need to investigate this further.
 @property (readwrite, atomic, weak) UITableView *tableView;
 
-@property (readwrite, atomic) NSMutableArray *sections;
-@property (readwrite, atomic) NSMutableDictionary *templateCells;
+@property (readwrite, atomic) NSMutableArray<PVGTableViewSection *> *sections;
+@property (readwrite, atomic) NSMutableDictionary<NSString *, UITableViewCell<PVGTableViewCell> *> *templateCells;
 @property (readwrite, atomic) RACSubject *didReloadSubject;
 
 @property (readwrite, atomic) RACTuple *pendingScrollCommand;
 @property (readwrite, atomic) NSInteger ongoingScrollAnimations;
-@property (readwrite, atomic) NSMutableArray *scrollCommandsQueue;
+@property (readwrite, atomic) NSMutableArray<RACTuple *> *scrollCommandsQueue;
 
 @property (readwrite, atomic) PVGTableViewRenderCommand *pendingRenderCommand;
 
@@ -159,7 +159,7 @@ static BOOL enableDebugAssertions = NO;
     [viewModelsSignal subscribeNext:^(NSArray *newViewModels) {
         @strongify(self);
         [self executeRenderCommand:[PVGTableViewRenderCommand renderCommandForSection:sectionIndex
-                                                                            viewModels:[newViewModels copy]]];
+                                                                           viewModels:[newViewModels copy]]];
     }];
     
     [[section.dataSource.scrollCommands ignore:nil] subscribeNext:^(PVGTableViewScrollCommand *command) {
@@ -183,13 +183,13 @@ static BOOL enableDebugAssertions = NO;
     
     id<PVGTableViewCellViewModel> lastViewModel = [section.loadedData lastObject];
     lastViewModel.sectionPosition = TableViewCellPositionLast;
-
-
+    
+    
     NSArray *indexPathsToReloadWithNoAnimation = [self.animator animateWithTableView:self.tableView
                                                                         sectionIndex:sectionIndex
                                                                             lastData:lastData
                                                                              newData:section.loadedData];
-
+    
     if ([indexPathsToReloadWithNoAnimation count] > 0)
     {
         for (NSIndexPath *indexPath in indexPathsToReloadWithNoAnimation)
@@ -399,7 +399,7 @@ static BOOL enableDebugAssertions = NO;
 }
 
 - (UITableViewCell<PVGTableViewCell> *)setupCell:(UITableViewCell<PVGTableViewCell> *)cell
-                                    viewModel:(id<PVGTableViewCellViewModel>)cellViewModel
+                                       viewModel:(id<PVGTableViewCellViewModel>)cellViewModel
 {
     [self attachViewModel:cellViewModel toCell:cell];
     

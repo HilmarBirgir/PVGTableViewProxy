@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol PVGTableViewSectionHeaderViewModel <NSObject>
 
 @property (readonly, atomic, copy) NSString *title;
@@ -19,3 +21,5 @@
 + (instancetype)viewModelWithTitle:(NSString *)title;
 
 @end
+
+NS_ASSUME_NONNULL_END
