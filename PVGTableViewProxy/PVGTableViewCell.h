@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol PVGTableViewCell <NSObject>
 
-@property (nullable, readwrite, nonatomic) id<PVGTableViewCellViewModel> viewModel;
+@property (readwrite, nonatomic, nullable) id<PVGTableViewCellViewModel> viewModel;
 
 - (NSNumber *)height;
 - (void)setup;
