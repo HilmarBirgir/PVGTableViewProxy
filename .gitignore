@@ -16,8 +16,11 @@ xcuserdata
 profile
 *.moved-aside
 DerivedData
-*.hmap
+*.hmap	
 *.ipa
+Pods/
+**/Pods/
+Podfile.lock
 
 # Bundler
 .bundle
