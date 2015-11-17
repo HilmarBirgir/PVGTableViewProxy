@@ -1,5 +1,6 @@
 # PVGTableViewProxy
 
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/plain-vanilla-games/PVGTableViewProxy/blob/master/LICENSE)
 [![Build Status](https://travis-ci.org/plain-vanilla-games/PVGTableViewProxy.svg)](https://travis-ci.org/plain-vanilla-games/PVGTableViewProxy)
 [![pod](https://img.shields.io/cocoapods/v/PVGTableViewProxy.svg)](https://img.shields.io/cocoapods/v/PVGTableViewProxy.svg)
 
