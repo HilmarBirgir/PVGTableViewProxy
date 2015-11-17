@@ -10,6 +10,8 @@
 #import "PVGTableViewCellViewModel.h"
 #import "PVGTableViewScrollCommand.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class RACSignal;
 
 @protocol PVGTableViewDataSource <NSObject>
@@ -22,7 +24,9 @@
 
 @optional
 
-- (void)loadMoreDataWithCurrentData:(NSArray *)currentData;
+- (void)loadMoreDataWithCurrentData:(NSArray<NSObject <PVGTableViewCellViewModel> *> *)currentData;
 - (void)reloadViewModels;
 
 @end
+
+NS_ASSUME_NONNULL_END

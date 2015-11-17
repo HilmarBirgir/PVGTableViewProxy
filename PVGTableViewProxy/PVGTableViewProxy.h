@@ -14,6 +14,8 @@
 @class RACSignal;
 @class PVGTableViewProxy;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol PVGTableViewProxyConfig <NSObject>
 
 - (void)registerClass:(Class)headerClass forHeaderReuseIdentifier:(NSString *)identifier;
@@ -41,16 +43,16 @@ typedef void (^TableViewProxyBuilderBlock)(id<PVGTableViewProxyConfig> builder);
 /*
  Example usage:
  
-PVGTableViewProxy *dataSource = [PVGTableViewProxy proxyWithTableView:self.newsFeed
-                                                     dataSource:self.viewModel.feedStream
-                                                        builder:^(id<PVGTableViewProxyConfig> builder) {
-                UINib *nib = [UINib nibWithNibName:@"FeedItemCell" bundle:nil];
-                [builder registerNib:nib forCellReuseIdentifier:GAME_ITEM_REUSE_IDENTIFIER];
-                [builder registerNib:nib forCellReuseIdentifier:PROFILE_PICTURE_CHANGE_ITEM_REUSE_IDENTIFIER];
-                [builder registerNib:nib forCellReuseIdentifier:QUESTIONS_ADDED_ITEM_REUSE_IDENTIFIER];
-                [builder registerNib:nib forCellReuseIdentifier:ACHIEVEMENT_ITEM_REUSE_IDENTIFIER];
-}];
-*/
+ PVGTableViewProxy *dataSource = [PVGTableViewProxy proxyWithTableView:self.newsFeed
+ dataSource:self.viewModel.feedStream
+ builder:^(id<PVGTableViewProxyConfig> builder) {
+ UINib *nib = [UINib nibWithNibName:@"FeedItemCell" bundle:nil];
+ [builder registerNib:nib forCellReuseIdentifier:GAME_ITEM_REUSE_IDENTIFIER];
+ [builder registerNib:nib forCellReuseIdentifier:PROFILE_PICTURE_CHANGE_ITEM_REUSE_IDENTIFIER];
+ [builder registerNib:nib forCellReuseIdentifier:QUESTIONS_ADDED_ITEM_REUSE_IDENTIFIER];
+ [builder registerNib:nib forCellReuseIdentifier:ACHIEVEMENT_ITEM_REUSE_IDENTIFIER];
+ }];
+ */
 + (instancetype)proxyWithTableView:(UITableView *)tableView
                         dataSource:(RACSignal *)sourceSignal
                            builder:(TableViewProxyBuilderBlock)builderBlock;
@@ -59,14 +61,14 @@ PVGTableViewProxy *dataSource = [PVGTableViewProxy proxyWithTableView:self.newsF
  Example usage:
  
  PVGTableViewProxy *dataSource = [PVGTableViewProxy proxyWithTableView:self.newsFeed
-                                                         builder:^(id<PVGTableViewProxyConfig> builder) {
+ builder:^(id<PVGTableViewProxyConfig> builder) {
  
-         [builder addDataSource:firstSectionDataSource forSection:0];
-         [builder addDataSource:secondSectionDataSource forSection:1];
+ [builder addDataSource:firstSectionDataSource forSection:0];
+ [builder addDataSource:secondSectionDataSource forSection:1];
  
-         UINib *nib = [UINib nibWithNibName:@"FeedItemCell" bundle:nil];
-         [builder registerNib:nib forCellReuseIdentifier:GAME_ITEM_REUSE_IDENTIFIER];
-         [builder registerNib:nib forCellReuseIdentifier:PROFILE_PICTURE_CHANGE_ITEM_REUSE_IDENTIFIER];
+ UINib *nib = [UINib nibWithNibName:@"FeedItemCell" bundle:nil];
+ [builder registerNib:nib forCellReuseIdentifier:GAME_ITEM_REUSE_IDENTIFIER];
+ [builder registerNib:nib forCellReuseIdentifier:PROFILE_PICTURE_CHANGE_ITEM_REUSE_IDENTIFIER];
  }];
  */
 + (instancetype)proxyWithTableView:(UITableView *)tableView
@@ -82,3 +84,5 @@ PVGTableViewProxy *dataSource = [PVGTableViewProxy proxyWithTableView:self.newsF
 - (void)attachViewModel:(id<PVGTableViewCellViewModel>)cellViewModel toCell:(UITableViewCell<PVGTableViewCell> *)cell;
 
 @end
+
+NS_ASSUME_NONNULL_END

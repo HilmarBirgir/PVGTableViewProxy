@@ -7,10 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+
 #import "PVGTableViewProxyAnimator.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface PVGGenericTableViewProxyAnimator : NSObject<PVGTableViewProxyAnimator>
 
 @property (readwrite, nonatomic) BOOL enableDebugAssertions;
 
 @end
+
+
+NS_ASSUME_NONNULL_END

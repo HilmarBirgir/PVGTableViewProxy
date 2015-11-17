@@ -18,8 +18,8 @@
 
 - (void)test_is_equal_if_no_unique_ids
 {
-    PVGTableViewScrollCommand *command1 = [PVGTableViewScrollCommand commandWithType:ScrollCommandTypeTop animated:NO uniqueID:nil];
-    PVGTableViewScrollCommand *command2 = [PVGTableViewScrollCommand commandWithType:ScrollCommandTypeTop animated:NO uniqueID:nil];
+    PVGTableViewScrollCommand *command1 = [PVGTableViewScrollCommand commandWithType:ScrollCommandTypeTop animated:NO uniqueID:@"1"];
+    PVGTableViewScrollCommand *command2 = [PVGTableViewScrollCommand commandWithType:ScrollCommandTypeTop animated:NO uniqueID:@"1"];
     
     XCTAssertEqualObjects(command1, command2);
     XCTAssertEqual([command1 hash], [command2 hash]);

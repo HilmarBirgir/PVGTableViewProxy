@@ -13,11 +13,13 @@
 
 @class RACSignal;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol PVGTableViewSectionDataSource <NSObject>
 
 @property (readonly, atomic) RACSignal *dataSource;
 
-- (void)loadMoreDataWithCurrentData:(NSArray *)currentData;
+- (void)loadMoreDataWithCurrentData:(NSArray<NSObject <PVGTableViewCellViewModel> *> *)currentData;
 
 @end
 
@@ -28,7 +30,7 @@
 @property (readonly, atomic) id<PVGTableViewSectionHeaderViewModel> sectionHeaderViewModel;
 
 @property (readonly, atomic) id<PVGTableViewDataSource> dataSource;
-@property (readwrite, atomic, copy) NSArray *loadedData;
+@property (nullable, readwrite, atomic, copy) NSArray<NSObject <PVGTableViewCellViewModel> *> *loadedData;
 
 + (instancetype)sectionWithDataSource:(id<PVGTableViewDataSource>)dataSource;
 
@@ -43,3 +45,5 @@
 - (void)loadMoreData;
 
 @end
+
+NS_ASSUME_NONNULL_END

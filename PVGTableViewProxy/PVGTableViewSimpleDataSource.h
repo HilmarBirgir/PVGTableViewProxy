@@ -9,9 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "PVGTableViewDataSource.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol PVGTableViewSimpleDataSourceLoadMoreDelegate <NSObject>
 
-- (void)loadMoreDataWithCurrentData:(NSArray *)currentData;
+- (void)loadMoreDataWithCurrentData:(NSArray<NSObject <PVGTableViewCellViewModel> *> *)currentData;
 
 @end
 
@@ -24,3 +26,5 @@
 - (void)sendScrollCommand:(PVGTableViewScrollCommand *)scrollCommand;
 
 @end
+
+NS_ASSUME_NONNULL_END

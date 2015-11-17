@@ -40,7 +40,9 @@
 @property (readwrite, atomic) UITableView *tableView;
 @property (readwrite, atomic) id mockTableView;
 @property (readwrite, atomic) PVGTableViewProxy *proxy;
-@property (readwrite, atomic) id mockProxy;
+
+@property (readwrite, atomic) id mockDataSource;
+@property (readwrite, atomic) id mockRACSignal;
 
 @end
 
@@ -54,6 +56,9 @@
     self.mockTableView = OCMClassMock([UITableView class]);
     
     self.proxy = [[PVGTableViewProxy alloc] initWithTableView:self.mockTableView];
+    
+    self.mockDataSource = [OCMockObject niceMockForProtocol:@protocol(PVGTableViewDataSource)];
+    self.mockRACSignal = [OCMockObject niceMockForClass:[RACSignal class]];
 }
 
 
@@ -65,7 +70,7 @@
     
     OCMExpect([mockTableView setDataSource:[OCMArg isKindOfClass:[PVGTableViewProxy class]]]);
     
-    PVGTableViewProxy *proxy = [PVGTableViewProxy proxyWithTableView:mockTableView dataSource:nil builder:^(id<PVGTableViewProxyConfig> newProxy) {}];
+    PVGTableViewProxy *proxy = [PVGTableViewProxy proxyWithTableView:mockTableView dataSource:self.mockRACSignal builder:^(id<PVGTableViewProxyConfig> newProxy) {}];
     
     XCTAssertNotNil(proxy);
     
@@ -78,7 +83,7 @@
     
     OCMExpect([mockTableView setDelegate:[OCMArg isKindOfClass:[PVGTableViewProxy class]]]);
     
-    PVGTableViewProxy *proxy = [PVGTableViewProxy proxyWithTableView:mockTableView dataSource:nil builder:^(id<PVGTableViewProxyConfig> newProxy) {}];
+    PVGTableViewProxy *proxy = [PVGTableViewProxy proxyWithTableView:mockTableView dataSource:self.mockRACSignal builder:^(id<PVGTableViewProxyConfig> newProxy) {}];
     
     XCTAssertNotNil(proxy);
     
@@ -91,7 +96,7 @@
     OCMExpect([mockSignal ignore:nil]).andReturn(mockSignal);
     OCMExpect([mockSignal subscribeNext:OCMOCK_ANY]);
     
-    PVGTableViewProxy *proxy = [PVGTableViewProxy proxyWithTableView:nil
+    PVGTableViewProxy *proxy = [PVGTableViewProxy proxyWithTableView:self.mockTableView
                                                           dataSource:mockSignal
                                                              builder:^(id<PVGTableViewProxyConfig> newProxy) {}];
     
@@ -196,7 +201,7 @@
 {
     PVGTableViewSection *section = [PVGTableViewSection sectionWithReuseIdentifier:@"1"
                                                                              title:@"HEADER"
-                                                                        dataSource:nil];
+                                                                        dataSource:self.mockDataSource];
     
     id mockViewModel = OCMProtocolMock(@protocol(PVGTableViewCellViewModel));
     OCMStub([mockViewModel uniqueID]).andReturn(@"uuid");
@@ -204,7 +209,7 @@
     section.loadedData = @[mockViewModel];
     
     PVGTableViewProxy *proxy = [PVGTableViewProxy proxyWithTableView:self.mockTableView
-                                                          dataSource:nil
+                                                          dataSource:self.mockRACSignal
                                                              builder:^(id<PVGTableViewProxyConfig> newProxy) {}];
     [proxy addSection:section atIndex:0];
     
@@ -255,7 +260,7 @@
 {
     PVGTableViewProxy *proxy = [PVGTableViewProxy proxyWithTableView:self.mockTableView
                                                              builder:^(id<PVGTableViewProxyConfig> newProxy) {
-                                                                 [newProxy addSection:[PVGTableViewSection sectionWithDataSource:nil] atIndex:0];
+                                                                 [newProxy addSection:[PVGTableViewSection sectionWithDataSource:self.mockDataSource] atIndex:0];
                                                              }];
     
     XCTAssertEqual([proxy numberOfSectionsInTableView:self.mockTableView], 1);
@@ -265,7 +270,7 @@
 {
     PVGTableViewSection *section = [PVGTableViewSection sectionWithReuseIdentifier:@"1"
                                                                              title:@"HEADER"
-                                                                        dataSource:nil];
+                                                                        dataSource:self.mockDataSource];
     
     PVGTableViewProxy *proxy = [PVGTableViewProxy proxyWithTableView:self.mockTableView
                                                              builder:^(id<PVGTableViewProxyConfig> newProxy) {
@@ -277,7 +282,7 @@
 
 - (void)test_proxy_sets_view_model_on_view_when_returning_header_view
 {
-    PVGTableViewSection *section = [PVGTableViewSection sectionWithReuseIdentifier:@"1" title:@"HEADER" dataSource:nil];
+    PVGTableViewSection *section = [PVGTableViewSection sectionWithReuseIdentifier:@"1" title:@"HEADER" dataSource:self.mockDataSource];
     
     PVGTableViewProxy *proxy = [PVGTableViewProxy proxyWithTableView:self.mockTableView
                                                              builder:^(id<PVGTableViewProxyConfig> newProxy) {
@@ -308,7 +313,7 @@
     NSArray *newData = @[mockViewModel, mockViewModel2];
     
     PVGTableViewProxy *proxy = [PVGTableViewProxy proxyWithTableView:self.mockTableView
-                                                          dataSource:nil
+                                                          dataSource:self.mockRACSignal
                                                              builder:^(id<PVGTableViewProxyConfig> newProxy) {}];
     
     
@@ -337,7 +342,7 @@
     NSArray *newData = @[mockViewModel5, mockViewModel, mockViewModel4, mockViewModel3, mockViewModel];
     
     PVGTableViewProxy *proxy = [PVGTableViewProxy proxyWithTableView:self.mockTableView
-                                                          dataSource:nil
+                                                          dataSource:self.mockRACSignal
                                                              builder:^(id<PVGTableViewProxyConfig> newProxy) {}];
     
     NSArray *results = [proxy removeViewModelsWithDuplicateUniqueIDsFromArray:newData];
@@ -358,7 +363,7 @@
     NSArray *newData = @[mockViewModel];
     
     PVGTableViewProxy *proxy = [PVGTableViewProxy proxyWithTableView:self.mockTableView
-                                                          dataSource:nil
+                                                          dataSource:self.mockRACSignal
                                                              builder:^(id<PVGTableViewProxyConfig> newProxy) {}];
     
     NSArray *results = [proxy removeViewModelsWithDuplicateUniqueIDsFromArray:newData];
@@ -420,7 +425,7 @@
 {
     PVGTableViewSection *section = [PVGTableViewSection sectionWithReuseIdentifier:@"1"
                                                                              title:@"HEADER"
-                                                                        dataSource:nil];
+                                                                        dataSource:self.mockDataSource];
     
     id mockViewModel = OCMProtocolMock(@protocol(PVGTableViewCellViewModel));
     OCMStub([mockViewModel uniqueID]).andReturn(@"uuid");
@@ -447,7 +452,7 @@
 {
     PVGTableViewSection *section = [PVGTableViewSection sectionWithReuseIdentifier:@"1"
                                                                              title:@"HEADER"
-                                                                        dataSource:nil];
+                                                                        dataSource:self.mockDataSource];
     
     id mockViewModel = OCMProtocolMock(@protocol(PVGTableViewCellViewModel));
     OCMStub([mockViewModel uniqueID]).andReturn(@"uuid");
@@ -458,7 +463,7 @@
     
     PVGTableViewScrollCommand *command = [PVGTableViewScrollCommand commandWithType:ScrollCommandTypeBottom
                                                                            animated:NO
-                                                                           uniqueID:nil];
+                                                                           uniqueID:@"1"];
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:section.loadedData.count - 1
                                                 inSection:0];
@@ -474,7 +479,7 @@
 {
     PVGTableViewSection *section = [PVGTableViewSection sectionWithReuseIdentifier:@"1"
                                                                              title:@"HEADER"
-                                                                        dataSource:nil];
+                                                                        dataSource:self.mockDataSource];
     
     id mockViewModel = OCMProtocolMock(@protocol(PVGTableViewCellViewModel));
     OCMStub([mockViewModel uniqueID]).andReturn(@"uuid");
@@ -504,7 +509,7 @@
 {
     PVGTableViewSection *section = [PVGTableViewSection sectionWithReuseIdentifier:@"1"
                                                                              title:@"HEADER"
-                                                                        dataSource:nil];
+                                                                        dataSource:self.mockDataSource];
     
     id mockViewModel = OCMProtocolMock(@protocol(PVGTableViewCellViewModel));
     OCMStub([mockViewModel uniqueID]).andReturn(@"uuid");
@@ -527,14 +532,14 @@
 {
     PVGTableViewSection *section = [PVGTableViewSection sectionWithReuseIdentifier:@"1"
                                                                              title:@"HEADER"
-                                                                        dataSource:nil];
+                                                                        dataSource:self.mockDataSource];
     section.loadedData = @[];
     
     [self.proxy addSection:section atIndex:0];
     
     PVGTableViewScrollCommand *command = [PVGTableViewScrollCommand commandWithType:ScrollCommandTypeTop
                                                                            animated:NO
-                                                                           uniqueID:nil];
+                                                                           uniqueID:@"1"];
     
     self.proxy.tableView = self.tableView;
     
@@ -545,14 +550,14 @@
 {
     PVGTableViewSection *section = [PVGTableViewSection sectionWithReuseIdentifier:@"1"
                                                                              title:@"HEADER"
-                                                                        dataSource:nil];
+                                                                        dataSource:self.mockDataSource];
     section.loadedData = @[];
     
     [self.proxy addSection:section atIndex:0];
     
     PVGTableViewScrollCommand *command = [PVGTableViewScrollCommand commandWithType:ScrollCommandTypeBottom
                                                                            animated:NO
-                                                                           uniqueID:nil];
+                                                                           uniqueID:@"1"];
     
     self.proxy.tableView = self.tableView;
     
@@ -563,7 +568,7 @@
 {
     PVGTableViewSection *section = [PVGTableViewSection sectionWithReuseIdentifier:@"1"
                                                                              title:@"HEADER"
-                                                                        dataSource:nil];
+                                                                        dataSource:self.mockDataSource];
     section.loadedData = @[];
     
     [self.proxy addSection:section atIndex:0];
@@ -584,7 +589,7 @@
 {
     PVGTableViewSection *section = [PVGTableViewSection sectionWithReuseIdentifier:@"1"
                                                                              title:@"HEADER"
-                                                                        dataSource:nil];
+                                                                        dataSource:self.mockDataSource];
     
     id mockViewModel = OCMProtocolMock(@protocol(PVGTableViewCellViewModel));
     OCMStub([mockViewModel uniqueID]).andReturn(@"uuid");
@@ -613,7 +618,7 @@
 {
     PVGTableViewSection *section = [PVGTableViewSection sectionWithReuseIdentifier:@"1"
                                                                              title:@"HEADER"
-                                                                        dataSource:nil];
+                                                                        dataSource:self.mockDataSource];
     
     id mockViewModel = OCMProtocolMock(@protocol(PVGTableViewCellViewModel));
     OCMStub([mockViewModel uniqueID]).andReturn(@"uuid");
@@ -643,7 +648,7 @@
 {
     PVGTableViewSection *section = [PVGTableViewSection sectionWithReuseIdentifier:@"1"
                                                                              title:@"HEADER"
-                                                                        dataSource:nil];
+                                                                        dataSource:self.mockDataSource];
     
     id mockViewModel = OCMProtocolMock(@protocol(PVGTableViewCellViewModel));
     OCMStub([mockViewModel uniqueID]).andReturn(@"uuid");
@@ -672,7 +677,7 @@
 {
     PVGTableViewSection *section = [PVGTableViewSection sectionWithReuseIdentifier:@"1"
                                                                              title:@"HEADER"
-                                                                        dataSource:nil];
+                                                                        dataSource:self.mockDataSource];
     
     id mockViewModel = OCMProtocolMock(@protocol(PVGTableViewCellViewModel));
     OCMStub([mockViewModel uniqueID]).andReturn(@"uuid");
@@ -686,7 +691,7 @@
     
     PVGTableViewScrollCommand *firstCommand = [PVGTableViewScrollCommand commandWithType:ScrollCommandTypeBottom
                                                                                 animated:YES
-                                                                                uniqueID:nil];
+                                                                                uniqueID:@"1"];
     
     OCMExpect([self.mockTableView contentOffset]);
     
@@ -695,7 +700,7 @@
     
     PVGTableViewScrollCommand *secondCommand = [PVGTableViewScrollCommand commandWithType:ScrollCommandTypeTop
                                                                                  animated:YES
-                                                                                 uniqueID:nil];
+                                                                                 uniqueID:@"1"];
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0
                                                 inSection:0];
@@ -711,7 +716,7 @@
 {
     PVGTableViewSection *section = [PVGTableViewSection sectionWithReuseIdentifier:@"1"
                                                                              title:@"HEADER"
-                                                                        dataSource:nil];
+                                                                        dataSource:self.mockDataSource];
     
     id mockViewModel = OCMProtocolMock(@protocol(PVGTableViewCellViewModel));
     OCMStub([mockViewModel uniqueID]).andReturn(@"uuid");
@@ -726,7 +731,7 @@
     
     PVGTableViewScrollCommand *firstCommand = [PVGTableViewScrollCommand commandWithType:ScrollCommandTypeBottom
                                                                                 animated:YES
-                                                                                uniqueID:nil];
+                                                                                uniqueID:@"1"];
     
     [[[self.mockTableView expect] andReturnValue:[NSValue valueWithCGPoint:CGPointMake(0, 0)]] contentOffset];
     [[[self.mockTableView expect] andReturnValue:[NSValue valueWithCGPoint:CGPointMake(0, 30)]] contentOffset];
@@ -736,7 +741,7 @@
     
     PVGTableViewScrollCommand *secondCommand = [PVGTableViewScrollCommand commandWithType:ScrollCommandTypeTop
                                                                                  animated:YES
-                                                                                 uniqueID:nil];
+                                                                                 uniqueID:@"1"];
     
     XCTAssertTrue([self.proxy scrollInSection:0 usingCommand:secondCommand]);
     
@@ -765,7 +770,7 @@
     
     PVGTableViewSection *section = [PVGTableViewSection sectionWithReuseIdentifier:@"1"
                                                                              title:@"HEADER"
-                                                                        dataSource:nil];
+                                                                        dataSource:self.mockDataSource];
     
     id mockViewModel = OCMProtocolMock(@protocol(PVGTableViewCellViewModel));
     OCMStub([mockViewModel uniqueID]).andReturn(@"uuid");
@@ -779,7 +784,7 @@
     
     PVGTableViewScrollCommand *firstCommand = [PVGTableViewScrollCommand commandWithType:ScrollCommandTypeBottom
                                                                                 animated:YES
-                                                                                uniqueID:nil];
+                                                                                uniqueID:@"1"];
     
     OCMExpect([self.mockTableView contentOffset]).andReturn(CGPointMake(0, 0));
     OCMExpect([self.mockTableView contentOffset]).andReturn(CGPointMake(0, 10));
@@ -806,7 +811,7 @@
     
     PVGTableViewSection *section = [PVGTableViewSection sectionWithReuseIdentifier:@"1"
                                                                              title:@"HEADER"
-                                                                        dataSource:nil];
+                                                                        dataSource:self.mockDataSource];
     
     id mockViewModel = OCMProtocolMock(@protocol(PVGTableViewCellViewModel));
     OCMStub([mockViewModel uniqueID]).andReturn(@"uuid");
@@ -820,7 +825,7 @@
     
     PVGTableViewScrollCommand *firstCommand = [PVGTableViewScrollCommand commandWithType:ScrollCommandTypeBottom
                                                                                 animated:YES
-                                                                                uniqueID:nil];
+                                                                                uniqueID:@"1"];
     
     OCMExpect([self.mockTableView contentOffset]).andReturn(CGPointMake(0, 0));
     OCMExpect([self.mockTableView contentOffset]).andReturn(CGPointMake(0, 10));

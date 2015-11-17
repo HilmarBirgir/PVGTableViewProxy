@@ -44,7 +44,7 @@
     return self.scrollCommandsEmitter;
 }
 
-- (void)loadMoreDataWithCurrentData:(NSArray *)currentData
+- (void)loadMoreDataWithCurrentData:(NSArray<NSObject <PVGTableViewCellViewModel> *> *)currentData
 {
     [self.delegate loadMoreDataWithCurrentData:currentData];
 }
