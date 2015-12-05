@@ -1,5 +1,9 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
+xcodeproj 'PVGTableViewProxyExample'
+workspace '../PVGTableViewProxy'
+inhibit_all_warnings!
+
 target 'PVGTableViewProxyExample', :exclusive => true do
   pod "PVGTableViewProxy", :path => "../"
 end

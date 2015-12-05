@@ -2,70 +2,70 @@
 <Workspace
    version = "1.0">
    <Group
-      location = "container:"
+      location = "group:PVGTableViewProxy"
       name = "PVGTableViewProxy">
       <FileRef
-         location = "group:PVGTableViewProxy/PVGGenericTableViewProxyAnimator.h">
+         location = "group:PVGGenericTableViewProxyAnimator.h">
       </FileRef>
       <FileRef
-         location = "group:PVGTableViewProxy/PVGGenericTableViewProxyAnimator.m">
+         location = "group:PVGGenericTableViewProxyAnimator.m">
       </FileRef>
       <FileRef
-         location = "group:PVGTableViewProxy/PVGNoAnimationTableViewProxyAnimator.h">
+         location = "group:PVGNoAnimationTableViewProxyAnimator.h">
       </FileRef>
       <FileRef
-         location = "group:PVGTableViewProxy/PVGNoAnimationTableViewProxyAnimator.m">
+         location = "group:PVGNoAnimationTableViewProxyAnimator.m">
       </FileRef>
       <FileRef
-         location = "group:PVGTableViewProxy/PVGTableViewCell.h">
+         location = "group:PVGTableViewCell.h">
       </FileRef>
       <FileRef
-         location = "group:PVGTableViewProxy/PVGTableViewCellViewModel.h">
+         location = "group:PVGTableViewCellViewModel.h">
       </FileRef>
       <FileRef
-         location = "group:PVGTableViewProxy/PVGTableViewDataSource.h">
+         location = "group:PVGTableViewDataSource.h">
       </FileRef>
       <FileRef
-         location = "group:PVGTableViewProxy/PVGTableViewProxy.h">
+         location = "group:PVGTableViewProxy.h">
       </FileRef>
       <FileRef
-         location = "group:PVGTableViewProxy/PVGTableViewProxy.m">
+         location = "group:PVGTableViewProxy.m">
       </FileRef>
       <FileRef
-         location = "group:PVGTableViewProxy/PVGTableViewProxyAnimator.h">
+         location = "group:PVGTableViewProxyAnimator.h">
       </FileRef>
       <FileRef
-         location = "group:PVGTableViewProxy/PVGTableViewRenderCommand.h">
+         location = "group:PVGTableViewRenderCommand.h">
       </FileRef>
       <FileRef
-         location = "group:PVGTableViewProxy/PVGTableViewRenderCommand.m">
+         location = "group:PVGTableViewRenderCommand.m">
       </FileRef>
       <FileRef
-         location = "group:PVGTableViewProxy/PVGTableViewScrollCommand.h">
+         location = "group:PVGTableViewScrollCommand.h">
       </FileRef>
       <FileRef
-         location = "group:PVGTableViewProxy/PVGTableViewScrollCommand.m">
+         location = "group:PVGTableViewScrollCommand.m">
       </FileRef>
       <FileRef
-         location = "group:PVGTableViewProxy/PVGTableViewSection.h">
+         location = "group:PVGTableViewSection.h">
       </FileRef>
       <FileRef
-         location = "group:PVGTableViewProxy/PVGTableViewSection.m">
+         location = "group:PVGTableViewSection.m">
       </FileRef>
       <FileRef
-         location = "group:PVGTableViewProxy/PVGTableViewSectionHeader.h">
+         location = "group:PVGTableViewSectionHeader.h">
       </FileRef>
       <FileRef
-         location = "group:PVGTableViewProxy/PVGTableViewSectionHeaderViewModel.h">
+         location = "group:PVGTableViewSectionHeaderViewModel.h">
       </FileRef>
       <FileRef
-         location = "group:PVGTableViewProxy/PVGTableViewSectionHeaderViewModel.m">
+         location = "group:PVGTableViewSectionHeaderViewModel.m">
       </FileRef>
       <FileRef
-         location = "group:PVGTableViewProxy/PVGTableViewSimpleDataSource.h">
+         location = "group:PVGTableViewSimpleDataSource.h">
       </FileRef>
       <FileRef
-         location = "group:PVGTableViewProxy/PVGTableViewSimpleDataSource.m">
+         location = "group:PVGTableViewSimpleDataSource.m">
       </FileRef>
    </Group>
    <FileRef

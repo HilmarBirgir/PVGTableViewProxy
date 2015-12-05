@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0251F29C1BD683C5002609FD /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 0251F2981BD683C5002609FD /* en.lproj */; };
-		0251F29D1BD683C5002609FD /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0251F2991BD683C5002609FD /* Images.xcassets */; };
 		027C13CA1BE1051E00C2C8F5 /* SectionsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 027C13C71BE1051E00C2C8F5 /* SectionsListViewController.m */; };
 		027C13CB1BE1051E00C2C8F5 /* SectionsListViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 027C13C91BE1051E00C2C8F5 /* SectionsListViewModel.m */; };
 		1F38FB791BD7A36300B4577F /* DemoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F38FB651BD7A36300B4577F /* DemoCell.m */; };
@@ -270,6 +269,7 @@
 				6003F587195388D20070C39A /* Frameworks */,
 				6003F588195388D20070C39A /* Resources */,
 				D70DDB2DD3B2C7733E6D4A09 /* Copy Pods Resources */,
+				BEA134A5AAF919B4BCD23CFA /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -287,7 +287,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = PVG;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = "Jóhann Þ. Bergþórsson";
 			};
 			buildConfigurationList = 6003F585195388D10070C39A /* Build configuration list for PBXProject "PVGTableViewProxyExample" */;
@@ -317,7 +317,6 @@
 				1F38FB7D1BD7A36300B4577F /* LoadingCell.xib in Resources */,
 				0251F29C1BD683C5002609FD /* en.lproj in Resources */,
 				1FA423631BD7A3F4004F52F9 /* Images.xcassets in Resources */,
-				0251F29D1BD683C5002609FD /* Images.xcassets in Resources */,
 				1F38FB7A1BD7A36300B4577F /* DemoCell.xib in Resources */,
 				1F38FB881BD7A39000B4577F /* Storyboard.storyboard in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
@@ -341,6 +340,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		BEA134A5AAF919B4BCD23CFA /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PVGTableViewProxyExample/Pods-PVGTableViewProxyExample-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D70DDB2DD3B2C7733E6D4A09 /* Copy Pods Resources */ = {
