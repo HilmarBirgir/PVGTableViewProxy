@@ -22,7 +22,12 @@ pod "PVGTableViewProxy"
 
 ## Usage
 
-To run the example project, clone the repo and open `PVGTableViewProxy.xcworkspace` and then run the `PVGTableViewProxyExample` target.
+`PVGTableViewProxy` includes an example project within the [Example](Example) subdirectory. In order to run the example project, you must install the dependencies via [CocoaPods](http://cocoapods.org/):
+
+    cd Example
+    pod install
+
+Once dependencies are installed you can run the project by running the `PVGTableViewProxyExample` target.
 
 ## Getting Started
 
@@ -66,8 +71,8 @@ The wrapper around your signal of data.
 
 `PVGTableViewProxy` includes a suite of unit tests within the Tests subdirectory. In order to run the unit tests, you must install the testing dependencies via [CocoaPods](http://cocoapods.org/):
 
-    $ cd Tests
-    $ pod install
+    cd Tests
+    pod install
 
 Once testing dependencies are installed you can run the tests on the Tests target. The unit tests run on Travis CI and you can see the build status on the top of this page.
 
