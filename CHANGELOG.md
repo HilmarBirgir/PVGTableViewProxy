@@ -1,3 +1,9 @@
+#Release 0.3.1
+
+Removed PVGTableViewCellWithCollectionViewModel protocol
+Added nullability annotations
+Fixes project settings
+
 #Release 0.3.0
 
 Adds protection in PVGTableViewProxy against multiple
