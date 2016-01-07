@@ -41,27 +41,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-static const float COLLECTION_VIEW_SIDE_MARGIN = 6;
-
 @protocol PVGTableViewCellSeperatorProtocol <NSObject>
 
 @property (readwrite, nonatomic) BOOL forceHideSeparator;
-
-@end
-
-@protocol PVGTableViewCellWithCollectionViewModel <NSObject, PVGTableViewCellViewModel, PVGTableViewCellSeperatorProtocol>
-
-@property (readonly, nonatomic, copy) NSArray *collectionViewData;
-@property (readonly, nonatomic, copy) NSString *collectionViewTitle;
-
-- (CGSize)cellSize;
-- (CGFloat)collectionViewHeight;
-- (CGFloat)minimumLineSpacing;
-- (CGFloat)minimumItemSpacing;
-- (CGFloat)bottomMargin;
-
-- (BOOL)hasMoreItemsForSeeAll;
-- (void)seeAll;
 
 @end
 
