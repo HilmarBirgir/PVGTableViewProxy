@@ -19,12 +19,12 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PVGTableViewScrollCommand : NSObject
 
 @property (readonly, nonatomic) ScrollCommandType type;
-@property (readonly, nonatomic, copy) NSString *uniqueID;
+@property (readonly, nonatomic, copy, nullable) NSString *uniqueID;
 @property (readonly, nonatomic) BOOL animated;
 
 + (instancetype)commandWithType:(ScrollCommandType)type
                        animated:(BOOL)animated
-                       uniqueID:(NSString *)uniqueID;
+                       uniqueID:(nullable NSString *)uniqueID;
 
 @end
 
