@@ -9,7 +9,7 @@
 #import "SectionsListViewController.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
-#import "PVGTableViewProxy.h"
+#import <PVGTableViewProxy/PVGTableViewProxy.h>
 #import "DemoCell.h"
 
 @interface SectionsListViewController ()

@@ -11,6 +11,6 @@
 #import <XCTest/XCTest.h>
 
 #import <OCMock/OCMock.h>
-#import <ReactiveCocoa.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 #import "Mocks.h"

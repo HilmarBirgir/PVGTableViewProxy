@@ -8,7 +8,7 @@
 
 #import "StaticListViewController.h"
 
-#import <PVGTableViewProxy.h>
+#import <PVGTableViewProxy/PVGTableViewProxy.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
 #import "DemoCell.h"

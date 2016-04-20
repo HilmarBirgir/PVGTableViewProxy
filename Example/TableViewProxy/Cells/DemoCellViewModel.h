@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Jóhann Þ. Bergþórsson. All rights reserved.
 //
 
-#import <PVGTableViewCellViewModel.h>
+#import <PVGTableViewProxy/PVGTableViewCellViewModel.h>
 
 FOUNDATION_EXPORT NSString *const DEMO_CELL_REUSE_IDENTIFIER;
 
