@@ -10,7 +10,7 @@
 
 #import "ForceUpdateCell.h"
 
-#import <PVGTableViewProxy.h>
+#import <PVGTableViewProxy/PVGTableViewProxy.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface ForceUpdateListViewController ()

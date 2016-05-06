@@ -6,7 +6,7 @@
 //  Copyright © 2015 Jóhann Þ. Bergþórsson. All rights reserved.
 //
 
-#import <PVGTableViewCellViewModel.h>
+#import <PVGTableViewProxy/PVGTableViewCellViewModel.h>
 
 FOUNDATION_EXPORT NSString *const FORCE_UPDATE_CELL_REUSE_IDENTIFIER;
 

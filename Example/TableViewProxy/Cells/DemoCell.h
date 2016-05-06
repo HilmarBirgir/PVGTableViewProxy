@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Jóhann Þ. Bergþórsson. All rights reserved.
 //
 
-#import <PVGTableViewCell.h>
+#import <PVGTableViewProxy/PVGTableViewCell.h>
 
 #import "DemoCellViewModel.h"
 

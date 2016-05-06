@@ -35,7 +35,7 @@
 		6003F598195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F596195388D20070C39A /* InfoPlist.strings */; };
 		6003F59A195388D20070C39A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F599195388D20070C39A /* main.m */; };
 		6003F59E195388D20070C39A /* PVGAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F59D195388D20070C39A /* PVGAppDelegate.m */; };
-		97B753C1ACD0E1AABCFD5603 /* libPods-PVGTableViewProxyExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA09E20BE89F07C87947109 /* libPods-PVGTableViewProxyExample.a */; };
+		EE3626349CAEB0614D73DCD2 /* Pods_PVGTableViewProxyExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F440A9C208CAFE221BD113DE /* Pods_PVGTableViewProxyExample.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -95,11 +95,11 @@
 		6003F5AF195388D20070C39A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		62EAA9A0C72CF01530BF8DE9 /* TableViewProxy.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = TableViewProxy.podspec; path = ../TableViewProxy.podspec; sourceTree = "<group>"; };
 		7B347A9C694FC2294C88A727 /* Pods-TableViewProxy_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TableViewProxy_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-TableViewProxy_Example/Pods-TableViewProxy_Example.release.xcconfig"; sourceTree = "<group>"; };
-		8BA09E20BE89F07C87947109 /* libPods-PVGTableViewProxyExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PVGTableViewProxyExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9685B49376977BEBBB1F105B /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		B2EF790AA24CB6FA57EEB04A /* Pods-TableViewProxy_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TableViewProxy_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TableViewProxy_Tests/Pods-TableViewProxy_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		BC49E348B94DC171E0AAE247 /* libPods-TableViewProxy_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TableViewProxy_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D082F3EC39B10A707E11A636 /* libPods-TableViewProxy_Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TableViewProxy_Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F440A9C208CAFE221BD113DE /* Pods_PVGTableViewProxyExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PVGTableViewProxyExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,7 +110,7 @@
 				6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */,
 				6003F592195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F58E195388D20070C39A /* Foundation.framework in Frameworks */,
-				97B753C1ACD0E1AABCFD5603 /* libPods-PVGTableViewProxyExample.a in Frameworks */,
+				EE3626349CAEB0614D73DCD2 /* Pods_PVGTableViewProxyExample.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -201,7 +201,7 @@
 				6003F5AF195388D20070C39A /* XCTest.framework */,
 				BC49E348B94DC171E0AAE247 /* libPods-TableViewProxy_Example.a */,
 				D082F3EC39B10A707E11A636 /* libPods-TableViewProxy_Tests.a */,
-				8BA09E20BE89F07C87947109 /* libPods-PVGTableViewProxyExample.a */,
+				F440A9C208CAFE221BD113DE /* Pods_PVGTableViewProxyExample.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -446,7 +446,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -479,7 +479,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;

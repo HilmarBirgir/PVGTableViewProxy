@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "InfiniteListViewModel.h"
-#import <PVGTableViewSimpleDataSource.h>
+#import <PVGTableViewProxy/PVGTableViewSimpleDataSource.h>
 
 @interface InfiniteListViewController : UIViewController<PVGTableViewSimpleDataSourceLoadMoreDelegate>
 
