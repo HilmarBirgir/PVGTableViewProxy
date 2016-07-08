@@ -23,6 +23,9 @@
          location = "group:PVGTableViewCellViewModel.h">
       </FileRef>
       <FileRef
+         location = "group:PVGTableViewCellWithCollectionView.h">
+      </FileRef>
+      <FileRef
          location = "group:PVGTableViewDataSource.h">
       </FileRef>
       <FileRef

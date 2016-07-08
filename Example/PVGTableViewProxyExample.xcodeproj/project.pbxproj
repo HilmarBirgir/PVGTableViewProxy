@@ -48,7 +48,6 @@
 		027C13C81BE1051E00C2C8F5 /* SectionsListViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SectionsListViewModel.h; sourceTree = "<group>"; };
 		027C13C91BE1051E00C2C8F5 /* SectionsListViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SectionsListViewModel.m; sourceTree = "<group>"; };
 		0BD71407736015070344F226 /* Pods-PVGTableViewProxyExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PVGTableViewProxyExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PVGTableViewProxyExample/Pods-PVGTableViewProxyExample.debug.xcconfig"; sourceTree = "<group>"; };
-		1B5B6071B7C473B46AD3180F /* Pods-TableViewProxy_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TableViewProxy_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TableViewProxy_Example/Pods-TableViewProxy_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		1E65A033C8DA073CDD26EE31 /* Pods-PVGTableViewProxyExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PVGTableViewProxyExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-PVGTableViewProxyExample/Pods-PVGTableViewProxyExample.release.xcconfig"; sourceTree = "<group>"; };
 		1F38FB641BD7A36300B4577F /* DemoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoCell.h; sourceTree = "<group>"; };
 		1F38FB651BD7A36300B4577F /* DemoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoCell.m; sourceTree = "<group>"; };
@@ -82,7 +81,6 @@
 		1FA423761BD7B20B004F52F9 /* ForceUpdateCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForceUpdateCell.xib; sourceTree = "<group>"; };
 		1FA423791BD7B21E004F52F9 /* ForceUpdateCellViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForceUpdateCellViewModel.h; sourceTree = "<group>"; };
 		1FA4237A1BD7B21E004F52F9 /* ForceUpdateCellViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForceUpdateCellViewModel.m; sourceTree = "<group>"; };
-		48E94C8FAB489CE3568BA881 /* Pods-TableViewProxy_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TableViewProxy_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TableViewProxy_Tests/Pods-TableViewProxy_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		5674319C8BC972A30DE81F7D /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* PVGTableViewProxyExample_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PVGTableViewProxyExample_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -94,9 +92,7 @@
 		6003F59D195388D20070C39A /* PVGAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PVGAppDelegate.m; sourceTree = "<group>"; };
 		6003F5AF195388D20070C39A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		62EAA9A0C72CF01530BF8DE9 /* TableViewProxy.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = TableViewProxy.podspec; path = ../TableViewProxy.podspec; sourceTree = "<group>"; };
-		7B347A9C694FC2294C88A727 /* Pods-TableViewProxy_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TableViewProxy_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-TableViewProxy_Example/Pods-TableViewProxy_Example.release.xcconfig"; sourceTree = "<group>"; };
 		9685B49376977BEBBB1F105B /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		B2EF790AA24CB6FA57EEB04A /* Pods-TableViewProxy_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TableViewProxy_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TableViewProxy_Tests/Pods-TableViewProxy_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		BC49E348B94DC171E0AAE247 /* libPods-TableViewProxy_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TableViewProxy_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D082F3EC39B10A707E11A636 /* libPods-TableViewProxy_Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TableViewProxy_Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F440A9C208CAFE221BD113DE /* Pods_PVGTableViewProxyExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PVGTableViewProxyExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -247,10 +243,6 @@
 		AD8F497EC25F8D7E7691CF26 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				1B5B6071B7C473B46AD3180F /* Pods-TableViewProxy_Example.debug.xcconfig */,
-				7B347A9C694FC2294C88A727 /* Pods-TableViewProxy_Example.release.xcconfig */,
-				B2EF790AA24CB6FA57EEB04A /* Pods-TableViewProxy_Tests.debug.xcconfig */,
-				48E94C8FAB489CE3568BA881 /* Pods-TableViewProxy_Tests.release.xcconfig */,
 				0BD71407736015070344F226 /* Pods-PVGTableViewProxyExample.debug.xcconfig */,
 				1E65A033C8DA073CDD26EE31 /* Pods-PVGTableViewProxyExample.release.xcconfig */,
 			);
@@ -264,12 +256,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6003F5BF195388D20070C39A /* Build configuration list for PBXNativeTarget "PVGTableViewProxyExample" */;
 			buildPhases = (
-				B1FAECCAC898B7B4F0A88B49 /* Check Pods Manifest.lock */,
+				B1FAECCAC898B7B4F0A88B49 /* 📦 Check Pods Manifest.lock */,
 				6003F586195388D20070C39A /* Sources */,
 				6003F587195388D20070C39A /* Frameworks */,
 				6003F588195388D20070C39A /* Resources */,
-				D70DDB2DD3B2C7733E6D4A09 /* Copy Pods Resources */,
-				BEA134A5AAF919B4BCD23CFA /* Embed Pods Frameworks */,
+				D70DDB2DD3B2C7733E6D4A09 /* 📦 Copy Pods Resources */,
+				BEA134A5AAF919B4BCD23CFA /* 📦 Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -327,14 +319,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		B1FAECCAC898B7B4F0A88B49 /* Check Pods Manifest.lock */ = {
+		B1FAECCAC898B7B4F0A88B49 /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "📦 Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -342,14 +334,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		BEA134A5AAF919B4BCD23CFA /* Embed Pods Frameworks */ = {
+		BEA134A5AAF919B4BCD23CFA /* 📦 Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "📦 Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -357,14 +349,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PVGTableViewProxyExample/Pods-PVGTableViewProxyExample-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D70DDB2DD3B2C7733E6D4A09 /* Copy Pods Resources */ = {
+		D70DDB2DD3B2C7733E6D4A09 /* 📦 Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "📦 Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="TableViewProxy-Example" type="AppleRunConfiguration" factoryName="Application" WORKING_DIR="" PASS_PARENT_ENVS_2="true" PROJECT_NAME="PVGTableViewProxyExample" TARGET_NAME="PVGTableViewProxyExample" CONFIG_NAME="Debug" SCHEME_NAME="TableViewProxy-Example" RUN_TARGET_PROJECT_NAME="PVGTableViewProxyExample" RUN_TARGET_NAME="PVGTableViewProxyExample" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
+    <envs />
+    <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
+      <REVEAL_SETTINGS autoInject="false" autoInstall="true" askToEnableAutoInstall="true" />
+    </EXTENSION>
+    <method />
+  </configuration>
+</component>
