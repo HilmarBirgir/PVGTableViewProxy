@@ -41,7 +41,7 @@ static BOOL enableDebugAssertions = NO;
 
 @property (readwrite, atomic, weak) id<UITableViewDelegate> existingDelegate;
 
-@property (readwrite, atomic) NSMutableDictionary<NSString *, NSNumber *> *collectionViewContentOffset;
+@property (readwrite, atomic) NSMutableDictionary<NSString *, NSValue *> *collectionViewContentOffset;
 
 @end
 
@@ -318,9 +318,9 @@ static BOOL enableDebugAssertions = NO;
         id<PVGTableViewCellViewModel> cellViewModel = [self viewModelForIndexPath:indexPath];
         
         NSString *cacheID = cellViewModel.cacheID;
-        CGFloat horizontalOffset = collectionView.contentOffset.x;
+        CGPoint contentOfffset = collectionView.contentOffset;
         
-        self.collectionViewContentOffset[cacheID] = @(horizontalOffset);
+        self.collectionViewContentOffset[cacheID] = [NSValue valueWithCGPoint:contentOfffset];
     }
 }
 
@@ -345,9 +345,11 @@ static BOOL enableDebugAssertions = NO;
         id<PVGTableViewCellViewModel> cellViewModel = [self viewModelForIndexPath:indexPath];
         
         NSString *cacheID = cellViewModel.cacheID;
-        CGFloat horizontalOffset = self.collectionViewContentOffset[cacheID].floatValue;
         
-        collectionView.contentOffset = CGPointMake(horizontalOffset, 0);
+        NSValue *contentOffsetValue = self.collectionViewContentOffset[cacheID];
+        CGPoint cachedContentOffset = contentOffsetValue.CGPointValue;
+        
+        collectionView.contentOffset = cachedContentOffset;
     }
     
     PVGTableViewSection *section = self.sections[indexPath.section];
@@ -361,7 +363,7 @@ static BOOL enableDebugAssertions = NO;
     }
 }
 
-- (NSMutableDictionary<NSString *, NSNumber *> *)collectionViewContentOffset
+- (NSMutableDictionary<NSString *, NSValue *> *)collectionViewContentOffset
 {
     if (_collectionViewContentOffset == nil)
     {

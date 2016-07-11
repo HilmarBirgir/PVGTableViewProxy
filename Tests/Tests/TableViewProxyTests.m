@@ -9,6 +9,7 @@
 #import "TestDependencies.h"
 
 #import "PVGTableViewCell.h"
+#import "PVGTableViewCellWithCollectionView.h"
 #import "PVGTableViewCellViewModel.h"
 #import "PVGTableViewProxy.h"
 #import "PVGTableViewSectionHeader.h"
@@ -22,6 +23,7 @@
 @property (readwrite, atomic) UITableView *tableView;
 @property (readwrite, atomic) id<UITableViewDelegate> existingDelegate;
 @property (readwrite, atomic) NSInteger ongoingScrollAnimations;
+@property (readwrite, atomic) NSMutableDictionary<NSString *, NSValue *> *collectionViewContentOffset;
 
 - (void)cacheCellHeightsFromData:(NSArray *)data;
 
@@ -876,6 +878,64 @@
     
     OCMVerifyAll(mockExistingDelegate);
     XCTAssertEqual(self.proxy.ongoingScrollAnimations, 9);
+}
+
+#pragma mark - UICollectionViews content ofsset cache tests
+
+- (void)test_will_display_cell_sets_cached_content_offset_for_collection_view_if_cell_is_pvg_tableview_cell_with_collection_view
+{
+    CGPoint cachedOffset = CGPointMake(10, 3);
+    
+    id mockCollectionView = [OCMockObject niceMockForClass:[UICollectionView class]];
+    [[mockCollectionView expect] setContentOffset:cachedOffset];
+    
+    id mockCellWithCollectionView = [OCMockObject niceMockForProtocol:@protocol(PVGTableViewCellWithCollectionView)];
+    [[[mockCellWithCollectionView stub] andReturn:mockCollectionView] collectionView];
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    id mockCellViewModel = [OCMockObject niceMockForProtocol:@protocol(PVGTableViewCellViewModel)];
+    [[[mockCellViewModel stub] andReturn:@"cache-id"] cacheID];
+    
+    NSArray *loadedData =  @[mockCellViewModel];
+    id mockSection = [OCMockObject niceMockForClass:[PVGTableViewSection class]];
+    [[[mockSection stub] andReturn:loadedData] loadedData];
+    [self.proxy addSection:mockSection atIndex:indexPath.section];
+    
+    self.proxy.collectionViewContentOffset = [NSMutableDictionary dictionary];
+    self.proxy.collectionViewContentOffset[@"cache-id"] = [NSValue valueWithCGPoint:cachedOffset];
+    
+    [self.proxy tableView:self.mockTableView willDisplayCell:mockCellWithCollectionView forRowAtIndexPath:indexPath];
+    
+    [mockCellWithCollectionView verify];
+}
+
+- (void)test_did_end_displaying_cell_caches_content_offset_for_collection_view_if_cell_is_pvg_tableview_cell_with_collection_view
+{
+    CGPoint cachedOffset = CGPointMake(10, 3);
+    
+    id mockCollectionView = [OCMockObject niceMockForClass:[UICollectionView class]];
+    [[[mockCollectionView stub] andReturnValue:[NSValue valueWithCGPoint:cachedOffset]] contentOffset];
+    
+    id mockCellWithCollectionView = [OCMockObject niceMockForProtocol:@protocol(PVGTableViewCellWithCollectionView)];
+    [[[mockCellWithCollectionView stub] andReturn:mockCollectionView] collectionView];
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    id mockCellViewModel = [OCMockObject niceMockForProtocol:@protocol(PVGTableViewCellViewModel)];
+    [[[mockCellViewModel stub] andReturn:@"cache-id"] cacheID];
+    
+    NSArray *loadedData =  @[mockCellViewModel];
+    id mockSection = [OCMockObject niceMockForClass:[PVGTableViewSection class]];
+    [[[mockSection stub] andReturn:loadedData] loadedData];
+    [self.proxy addSection:mockSection atIndex:indexPath.section];
+    
+    [self.proxy tableView:self.mockTableView didEndDisplayingCell:mockCellWithCollectionView forRowAtIndexPath:indexPath];
+    
+    NSValue *contentOffsetValue = self.proxy.collectionViewContentOffset[@"cache-id"];
+    XCTAssertNotNil(contentOffsetValue);
+    CGPoint contentOffset = contentOffsetValue.CGPointValue;
+    
+    XCTAssertEqual(contentOffset.x, cachedOffset.x);
+    XCTAssertEqual(contentOffset.y, cachedOffset.y);
 }
 
 @end
