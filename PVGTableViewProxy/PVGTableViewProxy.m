@@ -41,7 +41,7 @@ static BOOL enableDebugAssertions = NO;
 
 @property (readwrite, atomic, weak) id<UITableViewDelegate> existingDelegate;
 
-@property (readwrite, atomic) NSMutableDictionary<NSString *, NSValue *> *collectionViewContentOffset;
+@property (readwrite, nonatomic) NSMutableDictionary<NSString *, NSValue *> *collectionViewContentOffset;
 
 @end
 
