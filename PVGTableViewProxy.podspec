@@ -9,5 +9,5 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '8.0'
   s.requires_arc = true
   s.source_files = 'PVGTableViewProxy'
-  s.dependency 'ReactiveCocoa', '4.1.0'
+  s.dependency 'ReactiveCocoa'
 end
