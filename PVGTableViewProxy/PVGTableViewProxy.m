@@ -10,6 +10,7 @@
 
 #import "PVGTableViewCellViewModel.h"
 #import "PVGTableViewCell.h"
+#import "PVGTableViewCellWithCollectionView.h"
 #import "PVGTableViewSectionHeader.h"
 
 #import "PVGTableViewSimpleDataSource.h"
@@ -39,6 +40,8 @@ static BOOL enableDebugAssertions = NO;
 @property (readwrite, atomic) PVGTableViewRenderCommand *pendingRenderCommand;
 
 @property (readwrite, atomic, weak) id<UITableViewDelegate> existingDelegate;
+
+@property (readwrite, atomic) NSMutableDictionary<NSString *, NSValue *> *collectionViewContentOffset;
 
 @end
 
@@ -306,6 +309,19 @@ static BOOL enableDebugAssertions = NO;
     {
         [PVGTableViewCell didEndDisplaying];
     }
+    
+    if ([cell conformsToProtocol:@protocol(PVGTableViewCellWithCollectionView)])
+    {
+        id<PVGTableViewCellWithCollectionView> cellWithCollectionView = (id<PVGTableViewCellWithCollectionView>)cell;
+        UICollectionView *collectionView = cellWithCollectionView.collectionView;
+        
+        id<PVGTableViewCellViewModel> cellViewModel = [self viewModelForIndexPath:indexPath];
+        
+        NSString *cacheID = cellViewModel.cacheID;
+        CGPoint contentOfffset = collectionView.contentOffset;
+        
+        self.collectionViewContentOffset[cacheID] = [NSValue valueWithCGPoint:contentOfffset];
+    }
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -321,6 +337,21 @@ static BOOL enableDebugAssertions = NO;
         [PVGTableViewCell willDisplay];
     }
     
+    if ([cell conformsToProtocol:@protocol(PVGTableViewCellWithCollectionView)])
+    {
+        id<PVGTableViewCellWithCollectionView> cellWithCollectionView = (id<PVGTableViewCellWithCollectionView>)cell;
+        UICollectionView *collectionView = cellWithCollectionView.collectionView;
+        
+        id<PVGTableViewCellViewModel> cellViewModel = [self viewModelForIndexPath:indexPath];
+        
+        NSString *cacheID = cellViewModel.cacheID;
+        
+        NSValue *contentOffsetValue = self.collectionViewContentOffset[cacheID];
+        CGPoint cachedContentOffset = contentOffsetValue.CGPointValue;
+        
+        collectionView.contentOffset = cachedContentOffset;
+    }
+    
     PVGTableViewSection *section = self.sections[indexPath.section];
     if (indexPath.row + LOAD_MORE_THRESHOLD >= [[section loadedData] count])
     {
@@ -330,6 +361,16 @@ static BOOL enableDebugAssertions = NO;
             [section loadMoreData];
         });
     }
+}
+
+- (NSMutableDictionary<NSString *, NSValue *> *)collectionViewContentOffset
+{
+    if (_collectionViewContentOffset == nil)
+    {
+        _collectionViewContentOffset = [NSMutableDictionary dictionary];
+    }
+    
+    return _collectionViewContentOffset;
 }
 
 #pragma mark - UITableViewDataSource
